@@ -299,10 +299,10 @@
 				</div>
 
 				<div class="contact-links">
-					<a href="#" class="contact-social">GitHub ↗</a>
-					<a href="#" class="contact-social">Twitter ↗</a>
-					<a href="#" class="contact-social">LinkedIn ↗</a>
-					<a href="#" class="contact-social">Discord ↗</a>
+					<a href="https://github.com" class="contact-social" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+					<a href="https://x.com" class="contact-social" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
+					<a href="https://linkedin.com" class="contact-social" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+					<a href="https://discord.com" class="contact-social" target="_blank" rel="noopener noreferrer">Discord ↗</a>
 				</div>
 			</div>
 		</div>

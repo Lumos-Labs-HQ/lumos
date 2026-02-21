@@ -32,31 +32,65 @@
 
 	const projects = [
 		{
-			title: 'Lumos Auth',
-			description: 'Our own authentication system built from scratch — secure, fast, and extensible. A rival to mainstream auth providers.',
-			tags: ['Rust', 'Security', 'OAuth2'],
-			status: 'In Development'
+			title: 'Flash',
+			description: 'A powerful, database-agnostic ORM built in Go that provides Prisma-like functionality with multi-database support and type-safe code generation.',
+			tags: ['Go', 'ORM', 'PostgreSQL', 'MySQL'],
+			status: 'Active',
+			link: 'https://github.com/Lumos-Labs-HQ/flash'
 		},
 		{
-			title: 'C → Go Migration Engine',
-			description: 'Automated tooling for migrating legacy C codebases to idiomatic Go with type-safe transpilation.',
-			tags: ['Go', 'C', 'Compilers'],
-			status: 'Active'
+			title: 'AtomicDocs',
+			description: 'Lightweight, auto-generated API documentation for Express.js, Hono, and Go. Built with fasthttp for extreme performance.',
+			tags: ['Go', 'API Docs', 'FastHTTP'],
+			status: 'Active',
+			link: 'https://github.com/Lumos-Labs-HQ/atomicdocs'
 		},
 		{
-			title: 'Lumos App Suite',
-			description: 'A family of cross-platform applications designed for productivity — built with our own frameworks and tooling.',
-			tags: ['TypeScript', 'Svelte', 'Tauri'],
-			status: 'Beta'
+			title: 'wtop',
+			description: 'htop for Windows — a powerful system monitoring tool bringing Unix-style process monitoring to Windows.',
+			tags: ['Go', 'System Tools', 'Windows'],
+			status: 'Active',
+			link: 'https://github.com/Lumos-Labs-HQ/wtop'
 		},
 		{
-			title: 'Rush Runtime',
-			description: 'High-performance runtime environment for distributed computing tasks with intelligent load balancing.',
-			tags: ['Rust', 'Systems', 'Distributed'],
-			status: 'Research'
+			title: 'pgnx',
+			description: 'Fastest PostgreSQL driver for the NodeJS ecosystem, built with C++ for maximum performance.',
+			tags: ['C++', 'PostgreSQL', 'Node.js'],
+			status: 'Active',
+			link: 'https://github.com/Lumos-Labs-HQ/pgnx'
+		},
+		{
+			title: 'BestAuth',
+			description: 'Modern authentication system built from scratch — secure, fast, and extensible.',
+			tags: ['Authentication', 'Security', 'OAuth2'],
+			status: 'In Development',
+			link: 'https://github.com/Lumos-Labs-HQ/bestauth'
+		},
+		{
+			title: 'Flash Studio',
+			description: 'Visual database management and schema designer for Flash ORM.',
+			tags: ['Dart', 'Database', 'GUI'],
+			status: 'In Development',
+			link: 'https://github.com/Lumos-Labs-HQ/flash-studio'
+		},
+		{
+			title: 'Windows Session Manager',
+			description: 'Realtime Amazon Q session tracker for WSL, built with Rust for high performance.',
+			tags: ['Rust', 'WSL', 'TCP'],
+			status: 'Active',
+			link: 'https://github.com/Lumos-Labs-HQ/windows-session-manager'
+		},
+		{
+			title: 'VPM',
+			description: 'Package manager and tooling built with modern C++.',
+			tags: ['C++', 'Package Manager', 'DevTools'],
+			status: 'In Development',
+			link: 'https://github.com/Lumos-Labs-HQ/VPM'
 		}
 	];
 
+	// Products data - TODO: Add real products later
+	/*
 	const products = [
 		{
 			name: 'lumos-ui',
@@ -83,6 +117,7 @@
 			language: 'Go'
 		}
 	];
+	*/
 
 	const services = [
 		{
@@ -122,7 +157,6 @@
 
 		<div class="nav-links" class:nav-links-open={mobileMenuOpen}>
 			<a href="#projects" onclick={() => (mobileMenuOpen = false)}>Projects</a>
-			<a href="#products" onclick={() => (mobileMenuOpen = false)}>Products</a>
 			<a href="#services" onclick={() => (mobileMenuOpen = false)}>Services</a>
 			<a href="#contact" class="nav-cta" onclick={() => (mobileMenuOpen = false)}>Get in Touch</a>
 		</div>
@@ -184,12 +218,16 @@
 			<p class="section-subtitle">
 				Things we're building in-house — from systems-level tools to full applications.
 				Each project is born from a real need we experienced firsthand.
+				<br/><br/>
+				<a href="https://github.com/orgs/Lumos-Labs-HQ/repositories" target="_blank" rel="noopener noreferrer" class="github-link">
+					View all on GitHub →
+				</a>
 			</p>
 		</div>
 
 		<div class="projects-grid">
 			{#each projects as project, i}
-				<div class="project-card" style="transition-delay: {i * 100}ms">
+				<a href={project.link} target="_blank" rel="noopener noreferrer" class="project-card" style="transition-delay: {i * 100}ms">
 					<div class="project-status">{project.status}</div>
 					<h3 class="project-title">{project.title}</h3>
 					<p class="project-description">{project.description}</p>
@@ -199,13 +237,14 @@
 						{/each}
 					</div>
 					<div class="project-arrow">→</div>
-				</div>
+				</a>
 			{/each}
 		</div>
 	</div>
 </section>
 
-<!-- Products Section -->
+<!-- Products Section - TODO: Add real products later -->
+<!-- 
 <section id="products" class="section section-alt" data-animate class:section-visible={isVisible('products')}>
 	<div class="container">
 		<div class="section-header">
@@ -235,12 +274,13 @@
 		</div>
 	</div>
 </section>
+-->
 
 <!-- Freelancing / Services Section -->
 <section id="services" class="section" data-animate class:section-visible={isVisible('services')}>
 	<div class="container">
 		<div class="section-header">
-			<span class="section-tag">03</span>
+			<span class="section-tag">02</span>
 			<h2 class="section-title">Freelance & Services</h2>
 			<p class="section-subtitle">
 				We work with international and Indian clients on projects of all scales.
@@ -275,18 +315,21 @@
 	<div class="container">
 		<div class="contact-content">
 			<div class="section-header">
-				<span class="section-tag">04</span>
+				<span class="section-tag">03</span>
 				<h2 class="section-title">Let's Talk</h2>
 				<p class="section-subtitle">
 					Drop us a line. We respond within 24 hours.
 				</p>
+				<a href="https://cal.com/swarnendug7/15min" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 24px;">
+					Schedule a Call →
+				</a>
 			</div>
 
 			<div class="contact-grid">
 				<div class="contact-info">
 					<div class="contact-item">
 						<span class="contact-label">Email</span>
-						<a href="mailto:hello@lumos.dev" class="contact-value">hello@lumos.dev</a>
+						<a href="mailto:founders@lumoslab.tech" class="contact-value">founders@lumoslab.tech</a>
 					</div>
 					<div class="contact-item">
 						<span class="contact-label">Based in</span>
@@ -299,10 +342,10 @@
 				</div>
 
 				<div class="contact-links">
-					<a href="https://github.com" class="contact-social" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+					<a href="https://github.com/Lumos-Labs-HQ" class="contact-social" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
 					<a href="https://x.com" class="contact-social" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
 					<a href="https://linkedin.com" class="contact-social" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-					<a href="https://discord.com" class="contact-social" target="_blank" rel="noopener noreferrer">Discord ↗</a>
+					<a href="https://discord.gg/5ScEAsMT" class="contact-social" target="_blank" rel="noopener noreferrer">Discord ↗</a>
 				</div>
 			</div>
 		</div>
@@ -657,9 +700,24 @@
 		max-width: 560px;
 	}
 
+	.github-link {
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.95rem;
+		font-weight: 500;
+		color: var(--gray-900);
+		text-decoration: none;
+		margin-top: 12px;
+		transition: all var(--transition);
+	}
+
+	.github-link:hover {
+		color: var(--accent);
+		transform: translateX(4px);
+	}
+
 	/* Scroll animation */
 	.section.section-visible .projects-grid,
-	.section.section-visible .products-grid,
 	.section.section-visible .services-grid,
 	.section.section-visible .contact-content {
 		opacity: 1;
@@ -667,7 +725,6 @@
 	}
 
 	.projects-grid,
-	.products-grid,
 	.services-grid,
 	.contact-content {
 		opacity: 0;
@@ -676,7 +733,6 @@
 	}
 
 	.section.section-visible .projects-grid,
-	.section.section-visible .products-grid,
 	.section.section-visible .services-grid,
 	.section.section-visible .contact-content {
 		opacity: 1;
@@ -699,6 +755,9 @@
 		cursor: pointer;
 		position: relative;
 		overflow: hidden;
+		text-decoration: none;
+		color: inherit;
+		display: block;
 	}
 
 	.project-card::before {
@@ -784,6 +843,7 @@
 	}
 
 	/* ===================== PRODUCTS ===================== */
+	/* TODO: Uncomment when adding real products
 	.products-grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
@@ -870,6 +930,7 @@
 	.product-link:hover {
 		color: var(--gray-600);
 	}
+	*/
 
 	/* ===================== SERVICES ===================== */
 	.services-grid {
@@ -1110,8 +1171,7 @@
 			padding: 80px 24px;
 		}
 
-		.projects-grid,
-		.products-grid {
+		.projects-grid {
 			grid-template-columns: 1fr;
 		}
 

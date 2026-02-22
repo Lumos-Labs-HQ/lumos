@@ -1,5 +1,8 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
+	import { inject } from '@vercel/analytics';
+
+	inject();
 
 	let { children } = $props();
 </script>

@@ -3,6 +3,9 @@
 
 	let mounted = $state(false);
 	let scrollY = $state(0);
+	let mouseX = $state(0);
+	let mouseY = $state(0);
+	let showBackToTop = $state(false);
 
 	// Intersection observer for scroll animations
 	let visibleSections = $state<Set<string>>(new Set());
@@ -23,11 +26,44 @@
 
 		document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
 
-		return () => observer.disconnect();
+		// Cursor tracking
+		const handleMouseMove = (e: MouseEvent) => {
+			mouseX = e.clientX;
+			mouseY = e.clientY;
+		};
+		window.addEventListener('mousemove', handleMouseMove);
+
+		return () => {
+			observer.disconnect();
+			window.removeEventListener('mousemove', handleMouseMove);
+		};
 	});
+
+	$effect(() => {
+		showBackToTop = scrollY > 500;
+	});
+
+	function scrollToTop() {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
 
 	function isVisible(id: string): boolean {
 		return visibleSections.has(id);
+	}
+
+	function handleCardMouseMove(e: MouseEvent, cardEl: HTMLElement) {
+		const rect = cardEl.getBoundingClientRect();
+		const x = e.clientX - rect.left;
+		const y = e.clientY - rect.top;
+		const centerX = rect.width / 2;
+		const centerY = rect.height / 2;
+		const rotateX = (y - centerY) / 20;
+		const rotateY = (centerX - x) / 20;
+		cardEl.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+	}
+
+	function handleCardMouseLeave(cardEl: HTMLElement) {
+		cardEl.style.transform = '';
 	}
 
 	const projects = [
@@ -89,12 +125,28 @@
 		}
 	];
 
-<<<<<<< Updated upstream
-=======
+	const techStack = [
+		{ name: 'Go', icon: '⚡' },
+		{ name: 'Rust', icon: '🦀' },
+		{ name: 'TypeScript', icon: '📘' },
+		{ name: 'Python', icon: '🐍' },
+		{ name: 'C++', icon: '⚙️' },
+		{ name: 'Svelte', icon: '🔥' },
+		{ name: 'React', icon: '⚛️' },
+		{ name: 'PostgreSQL', icon: '🐘' },
+		{ name: 'Docker', icon: '🐳' },
+		{ name: 'Kubernetes', icon: '☸️' }
+	];
 
+	const team = [
+		{
+			name: 'Swarnendu Ghosh',
+			role: 'Founder & Lead Engineer',
+			bio: 'Systems architect with a passion for building tools that developers love.'
+		}
+	];
 
-
->>>>>>> Stashed changes
+>>>>>>> a74fd43895e6753fbc7cb0dcda24b76c7a960a1e
 	// Products data - TODO: Add real products later
 	/*
 	const products = [
@@ -129,34 +181,134 @@
 		{
 			title: 'Full-Stack Development',
 			description: 'End-to-end web and mobile applications using modern stacks — React, Svelte, Next.js, Go, Rust, and more.',
-			icon: '◈'
+			icon: '◈',
+			gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
 		},
 		{
 			title: 'AI & Machine Learning',
 			description: 'Custom AI solutions, LLM integration, computer vision, and intelligent automation powered by cutting-edge models.',
-			icon: '◉'
+			icon: '◉',
+			gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
 		},
 		{
 			title: 'Systems Engineering',
 			description: 'Low-level systems programming, performance optimization, and infrastructure tooling.',
-			icon: '⬡'
+			icon: '⬡',
+			gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
 		},
 		{
 			title: 'Cloud & DevOps',
 			description: 'Architecture design, CI/CD pipelines, Kubernetes orchestration, and scalable cloud infrastructure.',
-			icon: '△'
+			icon: '△',
+			gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
 		},
 		{
 			title: 'Mobile Development',
 			description: 'Native and cross-platform mobile apps for iOS and Android using Flutter, React Native, and Swift.',
-			icon: '◇'
+			icon: '◇',
+			gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
 		}
 	];
 
 	let mobileMenuOpen = $state(false);
 </script>
 
+<svelte:head>
+	<!-- Additional SEO for Homepage -->
+	<meta name="keywords" content="Lumos, Lumos Labs, software development, innovation studio, Flash ORM, AtomicDocs, wtop, pgnx, BestAuth, Go development, open source projects, custom software, developer tools, TypeScript, system programming, freelance engineering" />
+	<link rel="canonical" href="https://lumoslab.tech/" />
+	
+	<!-- JSON-LD for Software Projects -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "ItemList",
+		"name": "Lumos Open Source Projects",
+		"description": "Open source software projects and tools developed by Lumos Labs",
+		"itemListElement": [
+			{
+				"@type": "SoftwareApplication",
+				"position": 1,
+				"name": "Flash ORM",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Cross-platform",
+				"description": "A powerful, database-agnostic ORM built in Go that provides Prisma-like functionality with multi-database support and type-safe code generation",
+				"url": "https://github.com/Lumos-Labs-HQ/flash",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				},
+				"programmingLanguage": "Go"
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 2,
+				"name": "AtomicDocs",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Cross-platform",
+				"description": "Lightweight, auto-generated API documentation for Express.js, Hono, and Go. Built with fasthttp for extreme performance",
+				"url": "https://github.com/Lumos-Labs-HQ/atomicdocs",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				},
+				"programmingLanguage": "Go"
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 3,
+				"name": "wtop",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Windows",
+				"description": "htop for Windows — a powerful system monitoring tool bringing Unix-style process monitoring to Windows",
+				"url": "https://github.com/Lumos-Labs-HQ/wtop",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				},
+				"programmingLanguage": "Go"
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 4,
+				"name": "pgnx",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Cross-platform",
+				"description": "Fastest PostgreSQL driver for the NodeJS ecosystem, built with C++ for maximum performance",
+				"url": "https://github.com/Lumos-Labs-HQ/pgnx",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				},
+				"programmingLanguage": "C++"
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 5,
+				"name": "BestAuth",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Cross-platform",
+				"description": "Modern authentication system built from scratch — secure, fast, and extensible",
+				"url": "https://github.com/Lumos-Labs-HQ/BestAuth",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				}
+			}
+		]
+	}
+	<\/script>`}
+</svelte:head>
+
 <svelte:window bind:scrollY />
+
+{#if !mounted}
+	<div class="loading-screen">
+		<div class="loading-spinner">
+			<span class="logo-mark">◉</span>
+		</div>
+	</div>
+{/if}
 
 <!-- Navigation -->
 <nav class="nav" class:nav-scrolled={scrollY > 50}>
@@ -169,6 +321,8 @@
 		<div class="nav-links" class:nav-links-open={mobileMenuOpen}>
 			<a href="#projects" onclick={() => (mobileMenuOpen = false)}>Projects</a>
 			<a href="#services" onclick={() => (mobileMenuOpen = false)}>Services</a>
+			<a href="/blog" onclick={() => (mobileMenuOpen = false)}>Blog</a>
+			<a href="/about" onclick={() => (mobileMenuOpen = false)}>About</a>
 			<a href="#contact" class="nav-cta" onclick={() => (mobileMenuOpen = false)}>Get in Touch</a>
 		</div>
 
@@ -180,7 +334,7 @@
 </nav>
 
 <!-- Hero Section -->
-<header class="hero" class:hero-visible={mounted}>
+<header class="hero" class:hero-visible={mounted} style="--scroll: {scrollY}">
 	<div class="hero-bg">
 		<div class="grid-pattern"></div>
 	</div>
@@ -192,9 +346,9 @@
 			<span class="hero-accent">doesn't exist yet.</span>
 		</h1>
 		<p class="hero-subtitle">
-			From custom authentication systems to language migration engines —
-			Lumos engineers the tools, libraries, and products that push boundaries.
-			We also deliver world-class freelance engineering for clients worldwide.
+			Lumos is an innovation studio building custom authentication systems, language migration engines, and cutting-edge open-source tools.
+			Our team engineers the libraries and products that push boundaries.
+			We also deliver world-class freelance software engineering for clients worldwide.
 		</p>
 		<div class="hero-actions">
 			<a href="#projects" class="btn btn-primary">Explore Our Work</a>
@@ -202,17 +356,17 @@
 		</div>
 
 		<div class="hero-stats">
-			<div class="stat">
+			<div class="stat" style="animation-delay: 0.2s">
 				<span class="stat-value">50+</span>
 				<span class="stat-label">Projects Shipped</span>
 			</div>
 			<div class="stat-divider"></div>
-			<div class="stat">
+			<div class="stat" style="animation-delay: 0.4s">
 				<span class="stat-value">Global</span>
 				<span class="stat-label">Client Base</span>
 			</div>
 			<div class="stat-divider"></div>
-			<div class="stat">
+			<div class="stat" style="animation-delay: 0.6s">
 				<span class="stat-value">∞</span>
 				<span class="stat-label">Curiosity</span>
 			</div>
@@ -225,10 +379,10 @@
 	<div class="container">
 		<div class="section-header">
 			<span class="section-tag">01</span>
-			<h2 class="section-title">Projects</h2>
+			<h2 class="section-title">Lumos Open Source Projects</h2>
 			<p class="section-subtitle">
 				Things we're building in-house — from systems-level tools to full applications.
-				Each project is born from a real need we experienced firsthand.
+				Each Lumos project is born from a real need we experienced firsthand.
 				<br/><br/>
 				<a href="https://github.com/orgs/Lumos-Labs-HQ/repositories" target="_blank" rel="noopener noreferrer" class="github-link">
 					View all on GitHub →
@@ -238,7 +392,15 @@
 
 		<div class="projects-grid">
 			{#each projects as project, i}
-				<a href={project.link} target="_blank" rel="noopener noreferrer" class="project-card" style="transition-delay: {i * 100}ms">
+				<a 
+					href={project.link} 
+					target="_blank" 
+					rel="noopener noreferrer" 
+					class="project-card" 
+					style="transition-delay: {i * 100}ms"
+					onmousemove={(e) => handleCardMouseMove(e, e.currentTarget)}
+					onmouseleave={(e) => handleCardMouseLeave(e.currentTarget)}
+				>
 					<div class="project-status">{project.status}</div>
 					<h3 class="project-title">{project.title}</h3>
 					<p class="project-description">{project.description}</p>
@@ -292,19 +454,25 @@
 	<div class="container">
 		<div class="section-header">
 			<span class="section-tag">02</span>
-			<h2 class="section-title">We create experiences</h2>
+			<h2 class="section-title">Lumos Software Development Services</h2>
 			<p class="section-subtitle">
-				We work with international and Indian clients on projects of all scales.
+				Lumos works with international and Indian clients on projects of all scales.
 				From startups to enterprises — precision engineering, delivered on time.
 			</p>
 		</div>
 
 		<div class="services-grid">
 			{#each services as service, i}
-				<div class="service-card" style="transition-delay: {i * 100}ms">
+				<div 
+					class="service-card" 
+					style="transition-delay: {i * 100}ms; --gradient: {service.gradient}"
+					onmousemove={(e) => handleCardMouseMove(e, e.currentTarget)}
+					onmouseleave={(e) => handleCardMouseLeave(e.currentTarget)}
+				>
 					<span class="service-icon">{service.icon}</span>
 					<h3 class="service-title">{service.title}</h3>
 					<p class="service-description">{service.description}</p>
+					<div class="service-gradient"></div>
 				</div>
 			{/each}
 		</div>
@@ -331,32 +499,62 @@
 				<p class="section-subtitle">
 					Drop us a line. We respond within 24 hours.
 				</p>
-				<a href="https://cal.com/swarnendug7/15min" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 24px;">
-					Schedule a Call →
-				</a>
 			</div>
 
-			<div class="contact-grid">
-				<div class="contact-info">
-					<div class="contact-item">
-						<span class="contact-label">Email</span>
-						<a href="mailto:founders@lumoslab.tech" class="contact-value">founders@lumoslab.tech</a>
-					</div>
-					<div class="contact-item">
-						<span class="contact-label">Based in</span>
-						<span class="contact-value">India — Working Globally</span>
-					</div>
-					<div class="contact-item">
-						<span class="contact-label">Availability</span>
-						<span class="contact-value contact-available">● Open for projects</span>
+			<div class="contact-layout">
+				<div class="contact-form-wrapper">
+					<form class="contact-form" onsubmit={(e) => e.preventDefault()}>
+						<div class="form-group">
+							<label for="name">Name</label>
+							<input type="text" id="name" placeholder="Your name" required />
+						</div>
+						<div class="form-group">
+							<label for="email">Email</label>
+							<input type="email" id="email" placeholder="your@email.com" required />
+						</div>
+						<div class="form-group">
+							<label for="message">Message</label>
+							<textarea id="message" rows="5" placeholder="Tell us about your project..." required></textarea>
+						</div>
+						<button type="submit" class="btn btn-primary">Send Message</button>
+					</form>
+
+					<div class="newsletter-box">
+						<h3>Stay Updated</h3>
+						<p>Get notified about new projects and updates.</p>
+						<form class="newsletter-form" onsubmit={(e) => e.preventDefault()}>
+							<input type="email" placeholder="your@email.com" required />
+							<button type="submit" class="btn btn-secondary">Subscribe</button>
+						</form>
 					</div>
 				</div>
 
-				<div class="contact-links">
-					<a href="https://github.com/Lumos-Labs-HQ" class="contact-social" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-					<a href="https://x.com" class="contact-social" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
-					<a href="https://linkedin.com" class="contact-social" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-					<a href="https://discord.gg/5ScEAsMT" class="contact-social" target="_blank" rel="noopener noreferrer">Discord ↗</a>
+				<div class="contact-info-wrapper">
+					<div class="contact-info">
+						<div class="contact-item">
+							<span class="contact-label">Email</span>
+							<a href="mailto:founders@lumoslab.tech" class="contact-value">founders@lumoslab.tech</a>
+						</div>
+						<div class="contact-item">
+							<span class="contact-label">Based in</span>
+							<span class="contact-value">India — Working Globally</span>
+						</div>
+						<div class="contact-item">
+							<span class="contact-label">Availability</span>
+							<span class="contact-value contact-available">● Open for projects</span>
+						</div>
+					</div>
+
+					<div class="contact-links">
+						<a href="https://github.com/Lumos-Labs-HQ" class="contact-social" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+						<a href="https://x.com" class="contact-social" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
+						<a href="https://linkedin.com" class="contact-social" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+						<a href="https://discord.gg/5ScEAsMT" class="contact-social" target="_blank" rel="noopener noreferrer">Discord ↗</a>
+					</div>
+
+					<a href="https://cal.com/swarnendug7/15min" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 32px; width: 100%;">
+						Schedule a Call →
+					</a>
 				</div>
 			</div>
 		</div>
@@ -375,6 +573,13 @@
 		</div>
 	</div>
 </footer>
+
+<!-- Back to Top Button -->
+{#if showBackToTop}
+	<button class="back-to-top" onclick={scrollToTop} aria-label="Back to top">
+		↑
+	</button>
+{/if}
 
 <style>
 	/* ===================== VARIABLES ===================== */
@@ -395,6 +600,41 @@
 		--radius-sm: 8px;
 		--transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		--transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* ===================== LOADING SCREEN ===================== */
+	.loading-screen {
+		position: fixed;
+		inset: 0;
+		background: var(--gray-50);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 9999;
+		animation: fadeOut 0.5s ease 0.3s forwards;
+	}
+
+	.loading-spinner {
+		font-size: 3rem;
+		animation: pulse 1.5s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 0.5;
+			transform: scale(0.95);
+		}
+	}
+
+	@keyframes fadeOut {
+		to {
+			opacity: 0;
+			pointer-events: none;
+		}
 	}
 
 	/* ===================== NAVIGATION ===================== */
@@ -533,6 +773,8 @@
 		opacity: 0.4;
 		mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
 		-webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+		transform: translateY(calc(var(--scroll) * 0.3px));
+		will-change: transform;
 	}
 
 	.hero-content {
@@ -644,6 +886,12 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 4px;
+		opacity: 0;
+		animation: fadeInUp 0.6s ease forwards;
+	}
+
+	.hero-visible .stat {
+		animation: fadeInUp 0.6s ease forwards;
 	}
 
 	.stat-value {
@@ -780,13 +1028,25 @@
 		transition: opacity var(--transition);
 	}
 
+	.project-card::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 2px;
+		background: linear-gradient(90deg, #667eea, #764ba2);
+		opacity: 0;
+		transition: opacity var(--transition);
+	}
+
 	.project-card:hover {
 		border-color: var(--gray-300);
-		transform: translateY(-4px);
 		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
 	}
 
-	.project-card:hover::before {
+	.project-card:hover::before,
+	.project-card:hover::after {
 		opacity: 1;
 	}
 
@@ -975,11 +1235,25 @@
 		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
 	}
 
+	.service-gradient {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: var(--gradient);
+		opacity: 0;
+		transition: opacity var(--transition);
+	}
+
 	.service-card:hover {
 		background: rgba(255, 255, 255, 0.85);
 		border-color: rgba(255, 255, 255, 0.5);
-		transform: translateY(-6px);
 		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+	}
+
+	.service-card:hover .service-gradient {
+		opacity: 1;
 	}
 
 	.service-icon {
@@ -988,6 +1262,11 @@
 		margin-bottom: 24px;
 		color: var(--gray-700);
 		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+		transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+
+	.service-card:hover .service-icon {
+		transform: scale(1.2) rotate(5deg);
 	}
 
 	.service-title {
@@ -1046,17 +1325,130 @@
 	}
 
 	/* ===================== CONTACT ===================== */
-	.contact-grid {
+	.contact-layout {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1.2fr 1fr;
 		gap: 64px;
 		margin-top: 48px;
+	}
+
+	.contact-form-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+
+	.contact-form {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.form-group label {
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--gray-700);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.form-group input,
+	.form-group textarea {
+		padding: 14px 18px;
+		border: 1px solid var(--gray-300);
+		border-radius: 8px;
+		font-size: 0.95rem;
+		font-family: inherit;
+		color: var(--gray-900);
+		background: var(--white);
+		transition: all var(--transition);
+	}
+
+	.form-group input:focus,
+	.form-group textarea:focus {
+		outline: none;
+		border-color: var(--gray-900);
+		box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+	}
+
+	.form-group textarea {
+		resize: vertical;
+		min-height: 120px;
+	}
+
+	.newsletter-box {
+		background: var(--gray-900);
+		border-radius: var(--radius);
+		padding: 32px;
+		color: var(--white);
+	}
+
+	.newsletter-box h3 {
+		font-family: 'Space Grotesk', sans-serif;
+		font-size: 1.3rem;
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
+
+	.newsletter-box p {
+		font-size: 0.9rem;
+		color: var(--gray-400);
+		margin-bottom: 20px;
+	}
+
+	.newsletter-form {
+		display: flex;
+		gap: 12px;
+	}
+
+	.newsletter-form input {
+		flex: 1;
+		padding: 12px 16px;
+		border: 1px solid var(--gray-700);
+		border-radius: 8px;
+		font-size: 0.9rem;
+		background: rgba(255, 255, 255, 0.1);
+		color: var(--white);
+		transition: all var(--transition);
+	}
+
+	.newsletter-form input::placeholder {
+		color: var(--gray-500);
+	}
+
+	.newsletter-form input:focus {
+		outline: none;
+		border-color: var(--white);
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	.newsletter-form .btn-secondary {
+		background: var(--white);
+		color: var(--gray-900);
+		padding: 12px 24px;
+		white-space: nowrap;
+	}
+
+	.newsletter-form .btn-secondary:hover {
+		background: var(--gray-100);
+	}
+
+	.contact-info-wrapper {
+		display: flex;
+		flex-direction: column;
 	}
 
 	.contact-info {
 		display: flex;
 		flex-direction: column;
 		gap: 32px;
+		margin-bottom: 40px;
 	}
 
 	.contact-item {
@@ -1138,6 +1530,45 @@
 		color: var(--gray-400);
 	}
 
+	/* ===================== BACK TO TOP ===================== */
+	.back-to-top {
+		position: fixed;
+		bottom: 32px;
+		right: 32px;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: var(--gray-900);
+		color: var(--white);
+		border: none;
+		font-size: 1.2rem;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+		transition: all var(--transition);
+		z-index: 50;
+		animation: fadeInUp 0.3s ease;
+	}
+
+	.back-to-top:hover {
+		background: var(--black);
+		transform: translateY(-4px);
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+	}
+
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
 	/* ===================== RESPONSIVE ===================== */
 	@media (max-width: 1024px) {
 		.services-grid {
@@ -1213,9 +1644,13 @@
 			text-align: center;
 		}
 
-		.contact-grid {
+		.contact-layout {
 			grid-template-columns: 1fr;
 			gap: 48px;
+		}
+
+		.newsletter-form {
+			flex-direction: column;
 		}
 
 		.footer-inner {

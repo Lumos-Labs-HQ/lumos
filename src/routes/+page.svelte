@@ -5,6 +5,7 @@
 	let scrollY = $state(0);
 	let mouseX = $state(0);
 	let mouseY = $state(0);
+	let showBackToTop = $state(false);
 
 	// Intersection observer for scroll animations
 	let visibleSections = $state<Set<string>>(new Set());
@@ -37,6 +38,14 @@
 			window.removeEventListener('mousemove', handleMouseMove);
 		};
 	});
+
+	$effect(() => {
+		showBackToTop = scrollY > 500;
+	});
+
+	function scrollToTop() {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
 
 	function isVisible(id: string): boolean {
 		return visibleSections.has(id);
@@ -205,6 +214,14 @@
 
 <svelte:window bind:scrollY />
 
+{#if !mounted}
+	<div class="loading-screen">
+		<div class="loading-spinner">
+			<span class="logo-mark">◉</span>
+		</div>
+	</div>
+{/if}
+
 <!-- Navigation -->
 <nav class="nav" class:nav-scrolled={scrollY > 50}>
 	<div class="nav-inner">
@@ -216,6 +233,7 @@
 		<div class="nav-links" class:nav-links-open={mobileMenuOpen}>
 			<a href="#projects" onclick={() => (mobileMenuOpen = false)}>Projects</a>
 			<a href="#services" onclick={() => (mobileMenuOpen = false)}>Services</a>
+			<a href="/blog" onclick={() => (mobileMenuOpen = false)}>Blog</a>
 			<a href="/about" onclick={() => (mobileMenuOpen = false)}>About</a>
 			<a href="#contact" class="nav-cta" onclick={() => (mobileMenuOpen = false)}>Get in Touch</a>
 		</div>
@@ -250,17 +268,17 @@
 		</div>
 
 		<div class="hero-stats">
-			<div class="stat">
+			<div class="stat" style="animation-delay: 0.2s">
 				<span class="stat-value">50+</span>
 				<span class="stat-label">Projects Shipped</span>
 			</div>
 			<div class="stat-divider"></div>
-			<div class="stat">
+			<div class="stat" style="animation-delay: 0.4s">
 				<span class="stat-value">Global</span>
 				<span class="stat-label">Client Base</span>
 			</div>
 			<div class="stat-divider"></div>
-			<div class="stat">
+			<div class="stat" style="animation-delay: 0.6s">
 				<span class="stat-value">∞</span>
 				<span class="stat-label">Curiosity</span>
 			</div>
@@ -468,6 +486,13 @@
 	</div>
 </footer>
 
+<!-- Back to Top Button -->
+{#if showBackToTop}
+	<button class="back-to-top" onclick={scrollToTop} aria-label="Back to top">
+		↑
+	</button>
+{/if}
+
 <style>
 	/* ===================== VARIABLES ===================== */
 	:root {
@@ -487,6 +512,41 @@
 		--radius-sm: 8px;
 		--transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		--transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* ===================== LOADING SCREEN ===================== */
+	.loading-screen {
+		position: fixed;
+		inset: 0;
+		background: var(--gray-50);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 9999;
+		animation: fadeOut 0.5s ease 0.3s forwards;
+	}
+
+	.loading-spinner {
+		font-size: 3rem;
+		animation: pulse 1.5s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 0.5;
+			transform: scale(0.95);
+		}
+	}
+
+	@keyframes fadeOut {
+		to {
+			opacity: 0;
+			pointer-events: none;
+		}
 	}
 
 	/* ===================== NAVIGATION ===================== */
@@ -738,6 +798,12 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 4px;
+		opacity: 0;
+		animation: fadeInUp 0.6s ease forwards;
+	}
+
+	.hero-visible .stat {
+		animation: fadeInUp 0.6s ease forwards;
 	}
 
 	.stat-value {
@@ -874,13 +940,25 @@
 		transition: opacity var(--transition);
 	}
 
+	.project-card::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 2px;
+		background: linear-gradient(90deg, #667eea, #764ba2);
+		opacity: 0;
+		transition: opacity var(--transition);
+	}
+
 	.project-card:hover {
 		border-color: var(--gray-300);
-		transform: translateY(-4px);
 		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
 	}
 
-	.project-card:hover::before {
+	.project-card:hover::before,
+	.project-card:hover::after {
 		opacity: 1;
 	}
 
@@ -1362,6 +1440,45 @@
 	.footer-copy {
 		font-size: 0.82rem;
 		color: var(--gray-400);
+	}
+
+	/* ===================== BACK TO TOP ===================== */
+	.back-to-top {
+		position: fixed;
+		bottom: 32px;
+		right: 32px;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: var(--gray-900);
+		color: var(--white);
+		border: none;
+		font-size: 1.2rem;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+		transition: all var(--transition);
+		z-index: 50;
+		animation: fadeInUp 0.3s ease;
+	}
+
+	.back-to-top:hover {
+		background: var(--black);
+		transform: translateY(-4px);
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+	}
+
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	/* ===================== RESPONSIVE ===================== */

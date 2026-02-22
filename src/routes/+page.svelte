@@ -3,6 +3,8 @@
 
 	let mounted = $state(false);
 	let scrollY = $state(0);
+	let mouseX = $state(0);
+	let mouseY = $state(0);
 
 	// Intersection observer for scroll animations
 	let visibleSections = $state<Set<string>>(new Set());
@@ -23,11 +25,36 @@
 
 		document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
 
-		return () => observer.disconnect();
+		// Cursor tracking
+		const handleMouseMove = (e: MouseEvent) => {
+			mouseX = e.clientX;
+			mouseY = e.clientY;
+		};
+		window.addEventListener('mousemove', handleMouseMove);
+
+		return () => {
+			observer.disconnect();
+			window.removeEventListener('mousemove', handleMouseMove);
+		};
 	});
 
 	function isVisible(id: string): boolean {
 		return visibleSections.has(id);
+	}
+
+	function handleCardMouseMove(e: MouseEvent, cardEl: HTMLElement) {
+		const rect = cardEl.getBoundingClientRect();
+		const x = e.clientX - rect.left;
+		const y = e.clientY - rect.top;
+		const centerX = rect.width / 2;
+		const centerY = rect.height / 2;
+		const rotateX = (y - centerY) / 20;
+		const rotateY = (centerX - x) / 20;
+		cardEl.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+	}
+
+	function handleCardMouseLeave(cardEl: HTMLElement) {
+		cardEl.style.transform = '';
 	}
 
 	const projects = [
@@ -86,6 +113,27 @@
 			tags: ['C++', 'Package Manager', 'DevTools'],
 			status: 'In Development',
 			link: 'https://github.com/Lumos-Labs-HQ/VPM'
+		}
+	];
+
+	const techStack = [
+		{ name: 'Go', icon: '⚡' },
+		{ name: 'Rust', icon: '🦀' },
+		{ name: 'TypeScript', icon: '📘' },
+		{ name: 'Python', icon: '🐍' },
+		{ name: 'C++', icon: '⚙️' },
+		{ name: 'Svelte', icon: '🔥' },
+		{ name: 'React', icon: '⚛️' },
+		{ name: 'PostgreSQL', icon: '🐘' },
+		{ name: 'Docker', icon: '🐳' },
+		{ name: 'Kubernetes', icon: '☸️' }
+	];
+
+	const team = [
+		{
+			name: 'Swarnendu Ghosh',
+			role: 'Founder & Lead Engineer',
+			bio: 'Systems architect with a passion for building tools that developers love.'
 		}
 	];
 
@@ -163,6 +211,7 @@
 		<div class="nav-links" class:nav-links-open={mobileMenuOpen}>
 			<a href="#projects" onclick={() => (mobileMenuOpen = false)}>Projects</a>
 			<a href="#services" onclick={() => (mobileMenuOpen = false)}>Services</a>
+			<a href="/about" onclick={() => (mobileMenuOpen = false)}>About</a>
 			<a href="#contact" class="nav-cta" onclick={() => (mobileMenuOpen = false)}>Get in Touch</a>
 		</div>
 
@@ -232,7 +281,15 @@
 
 		<div class="projects-grid">
 			{#each projects as project, i}
-				<a href={project.link} target="_blank" rel="noopener noreferrer" class="project-card" style="transition-delay: {i * 100}ms">
+				<a 
+					href={project.link} 
+					target="_blank" 
+					rel="noopener noreferrer" 
+					class="project-card" 
+					style="transition-delay: {i * 100}ms"
+					onmousemove={(e) => handleCardMouseMove(e, e.currentTarget)}
+					onmouseleave={(e) => handleCardMouseLeave(e.currentTarget)}
+				>
 					<div class="project-status">{project.status}</div>
 					<h3 class="project-title">{project.title}</h3>
 					<p class="project-description">{project.description}</p>

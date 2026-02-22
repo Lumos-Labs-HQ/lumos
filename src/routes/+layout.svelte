@@ -1,6 +1,7 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import { inject } from '@vercel/analytics';
+	import Navbar from '$lib/components/Navbar.svelte';
 
 	inject();
 
@@ -79,6 +80,7 @@
 	<\/script>`}
 </svelte:head>
 
+<Navbar />
 {@render children()}
 
 <style>

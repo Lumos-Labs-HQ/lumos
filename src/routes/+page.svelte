@@ -126,8 +126,13 @@
 			icon: '◈'
 		},
 		{
+			title: 'AI & Machine Learning',
+			description: 'Custom AI solutions, LLM integration, computer vision, and intelligent automation powered by cutting-edge models.',
+			icon: '◉'
+		},
+		{
 			title: 'Systems Engineering',
-			description: 'Low-level systems programming, performance optimization, compiler design, and infrastructure tooling.',
+			description: 'Low-level systems programming, performance optimization, and infrastructure tooling.',
 			icon: '⬡'
 		},
 		{
@@ -136,8 +141,8 @@
 			icon: '△'
 		},
 		{
-			title: 'Open Source Consulting',
-			description: 'Strategic guidance on building, maintaining, and growing open-source projects and communities.',
+			title: 'Mobile Development',
+			description: 'Native and cross-platform mobile apps for iOS and Android using Flutter, React Native, and Swift.',
 			icon: '◇'
 		}
 	];
@@ -281,7 +286,7 @@
 	<div class="container">
 		<div class="section-header">
 			<span class="section-tag">02</span>
-			<h2 class="section-title">Freelance & Services</h2>
+			<h2 class="section-title">We create experiences</h2>
 			<p class="section-subtitle">
 				We work with international and Indian clients on projects of all scales.
 				From startups to enterprises — precision engineering, delivered on time.
@@ -935,46 +940,63 @@
 	/* ===================== SERVICES ===================== */
 	.services-grid {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(5, 1fr);
 		gap: 20px;
 		margin-bottom: 64px;
 	}
 
 	.service-card {
-		background: var(--white);
-		border: 1px solid var(--gray-200);
-		border-radius: var(--radius);
-		padding: 32px 28px;
+		background: rgba(255, 255, 255, 0.7);
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		border-radius: 16px;
+		padding: 36px 28px;
 		transition: all var(--transition);
 		text-align: left;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+	}
+
+	.service-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
 	}
 
 	.service-card:hover {
-		border-color: var(--gray-300);
-		transform: translateY(-4px);
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+		background: rgba(255, 255, 255, 0.85);
+		border-color: rgba(255, 255, 255, 0.5);
+		transform: translateY(-6px);
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
 	}
 
 	.service-icon {
 		display: inline-block;
-		font-size: 1.6rem;
-		margin-bottom: 20px;
-		color: var(--gray-400);
+		font-size: 2rem;
+		margin-bottom: 24px;
+		color: var(--gray-700);
+		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 	}
 
 	.service-title {
 		font-family: 'Space Grotesk', sans-serif;
-		font-size: 1.05rem;
+		font-size: 1.1rem;
 		font-weight: 600;
 		color: var(--gray-900);
-		margin-bottom: 10px;
+		margin-bottom: 12px;
 		letter-spacing: -0.01em;
 	}
 
 	.service-description {
-		font-size: 0.85rem;
-		line-height: 1.6;
-		color: var(--gray-500);
+		font-size: 0.88rem;
+		line-height: 1.65;
+		color: var(--gray-600);
 	}
 
 	.services-cta {

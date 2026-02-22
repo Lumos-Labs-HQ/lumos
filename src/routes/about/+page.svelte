@@ -90,7 +90,20 @@
 </script>
 
 <svelte:head>
-	<title>About — Lumos</title>
+	<title>About Lumos Labs — Innovation Studio | Software Development Team</title>
+	<meta name="description" content="Meet the Lumos Labs team. We are software engineers passionate about building cutting-edge open-source tools and custom solutions. Specializing in Go, Rust, TypeScript, and AI/ML technologies." />
+	<meta name="keywords" content="Lumos Labs team, about Lumos, software development team, Go developers, Rust developers, TypeScript experts, open source contributors, tech innovation, engineering team" />
+	<link rel="canonical" href="https://lumoslab.tech/about" />
+	
+	<!-- Open Graph -->
+	<meta property="og:title" content="About Lumos Labs — Innovation Studio" />
+	<meta property="og:description" content="Meet the team behind Lumos. Building cutting-edge open-source tools and delivering world-class software engineering solutions." />
+	<meta property="og:url" content="https://lumoslab.tech/about" />
+	<meta property="og:type" content="website" />
+	
+	<!-- Twitter -->
+	<meta property="twitter:title" content="About Lumos Labs — Innovation Studio" />
+	<meta property="twitter:description" content="Meet the team behind Lumos. Building cutting-edge open-source tools and delivering world-class software engineering solutions." />
 </svelte:head>
 
 <!-- Hero -->

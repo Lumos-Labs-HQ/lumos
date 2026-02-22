@@ -60,8 +60,20 @@
 </script>
 
 <svelte:head>
-	<title>Blog — Lumos</title>
-	<meta name="description" content="Insights, tutorials, and stories from the Lumos team about building developer tools and modern software." />
+	<title>Lumos Blog — Insights on Software Development, Open Source & Innovation</title>
+	<meta name="description" content="Insights, tutorials, and stories from the Lumos team about building developer tools, open-source projects, and modern software. Learn about Go, TypeScript, AI/ML, and more." />
+	<meta name="keywords" content="Lumos blog, software development blog, programming tutorials, Go programming, TypeScript tutorials, open source insights, developer tools, tech blog, engineering blog" />
+	<link rel="canonical" href="https://lumoslab.tech/blog" />
+	
+	<!-- Open Graph -->
+	<meta property="og:title" content="Lumos Blog — Software Development Insights" />
+	<meta property="og:description" content="Insights, tutorials, and stories from the Lumos team about building developer tools and modern software." />
+	<meta property="og:url" content="https://lumoslab.tech/blog" />
+	<meta property="og:type" content="website" />
+	
+	<!-- Twitter -->
+	<meta property="twitter:title" content="Lumos Blog — Software Development Insights" />
+	<meta property="twitter:description" content="Insights, tutorials, and stories from the Lumos team about building developer tools and modern software." />
 </svelte:head>
 
 <!-- Hero -->

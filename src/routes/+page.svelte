@@ -212,6 +212,93 @@
 	let mobileMenuOpen = $state(false);
 </script>
 
+<svelte:head>
+	<!-- Additional SEO for Homepage -->
+	<meta name="keywords" content="Lumos, Lumos Labs, software development, innovation studio, Flash ORM, AtomicDocs, wtop, pgnx, BestAuth, Go development, open source projects, custom software, developer tools, TypeScript, system programming, freelance engineering" />
+	<link rel="canonical" href="https://lumoslab.tech/" />
+	
+	<!-- JSON-LD for Software Projects -->
+	{@html `<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "ItemList",
+		"name": "Lumos Open Source Projects",
+		"description": "Open source software projects and tools developed by Lumos Labs",
+		"itemListElement": [
+			{
+				"@type": "SoftwareApplication",
+				"position": 1,
+				"name": "Flash ORM",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Cross-platform",
+				"description": "A powerful, database-agnostic ORM built in Go that provides Prisma-like functionality with multi-database support and type-safe code generation",
+				"url": "https://github.com/Lumos-Labs-HQ/flash",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				},
+				"programmingLanguage": "Go"
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 2,
+				"name": "AtomicDocs",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Cross-platform",
+				"description": "Lightweight, auto-generated API documentation for Express.js, Hono, and Go. Built with fasthttp for extreme performance",
+				"url": "https://github.com/Lumos-Labs-HQ/atomicdocs",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				},
+				"programmingLanguage": "Go"
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 3,
+				"name": "wtop",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Windows",
+				"description": "htop for Windows — a powerful system monitoring tool bringing Unix-style process monitoring to Windows",
+				"url": "https://github.com/Lumos-Labs-HQ/wtop",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				},
+				"programmingLanguage": "Go"
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 4,
+				"name": "pgnx",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Cross-platform",
+				"description": "Fastest PostgreSQL driver for the NodeJS ecosystem, built with C++ for maximum performance",
+				"url": "https://github.com/Lumos-Labs-HQ/pgnx",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				},
+				"programmingLanguage": "C++"
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 5,
+				"name": "BestAuth",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Cross-platform",
+				"description": "Modern authentication system built from scratch — secure, fast, and extensible",
+				"url": "https://github.com/Lumos-Labs-HQ/BestAuth",
+				"author": {
+					"@type": "Organization",
+					"name": "Lumos Labs"
+				}
+			}
+		]
+	}
+	<\/script>`}
+</svelte:head>
+
 <svelte:window bind:scrollY />
 
 {#if !mounted}
@@ -258,9 +345,9 @@
 			<span class="hero-accent">doesn't exist yet.</span>
 		</h1>
 		<p class="hero-subtitle">
-			From custom authentication systems to language migration engines —
-			Lumos engineers the tools, libraries, and products that push boundaries.
-			We also deliver world-class freelance engineering for clients worldwide.
+			Lumos is an innovation studio building custom authentication systems, language migration engines, and cutting-edge open-source tools.
+			Our team engineers the libraries and products that push boundaries.
+			We also deliver world-class freelance software engineering for clients worldwide.
 		</p>
 		<div class="hero-actions">
 			<a href="#projects" class="btn btn-primary">Explore Our Work</a>
@@ -291,10 +378,10 @@
 	<div class="container">
 		<div class="section-header">
 			<span class="section-tag">01</span>
-			<h2 class="section-title">Projects</h2>
+			<h2 class="section-title">Lumos Open Source Projects</h2>
 			<p class="section-subtitle">
 				Things we're building in-house — from systems-level tools to full applications.
-				Each project is born from a real need we experienced firsthand.
+				Each Lumos project is born from a real need we experienced firsthand.
 				<br/><br/>
 				<a href="https://github.com/orgs/Lumos-Labs-HQ/repositories" target="_blank" rel="noopener noreferrer" class="github-link">
 					View all on GitHub →
@@ -366,9 +453,9 @@
 	<div class="container">
 		<div class="section-header">
 			<span class="section-tag">02</span>
-			<h2 class="section-title">We create experiences</h2>
+			<h2 class="section-title">Lumos Software Development Services</h2>
 			<p class="section-subtitle">
-				We work with international and Indian clients on projects of all scales.
+				Lumos works with international and Indian clients on projects of all scales.
 				From startups to enterprises — precision engineering, delivered on time.
 			</p>
 		</div>

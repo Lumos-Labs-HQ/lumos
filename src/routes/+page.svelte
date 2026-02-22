@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import CanvasText from '$lib/components/CanvasText.svelte';
 
 	let mounted = $state(false);
 	let scrollY = $state(0);
@@ -342,7 +343,8 @@
 		<div class="hero-badge">Innovation Studio</div>
 		<h1 class="hero-title">
 			We build what<br />
-			<span class="hero-accent">doesn't exist yet.</span>
+			<CanvasText text="doesn't exist"
+			 colors={['rgba(82,82,82,1)','rgba(82,82,82,0.9)','rgba(82,82,82,0.8)','rgba(100,100,100,0.9)','rgba(100,100,100,0.8)','rgba(115,115,115,0.9)','rgba(115,115,115,0.8)','rgba(115,115,115,0.7)','rgba(130,130,130,0.8)','rgba(130,130,130,0.7)']} lineGap={4} animationDuration={25} /> yet.
 		</h1>
 		<p class="hero-subtitle">
 			Lumos is an innovation studio building custom authentication systems, language migration engines, and cutting-edge open-source tools.

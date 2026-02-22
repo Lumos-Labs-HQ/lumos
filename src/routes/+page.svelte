@@ -146,7 +146,6 @@
 		}
 	];
 
->>>>>>> a74fd43895e6753fbc7cb0dcda24b76c7a960a1e
 	// Products data - TODO: Add real products later
 	/*
 	const products = [

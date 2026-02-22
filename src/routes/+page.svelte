@@ -398,20 +398,6 @@
 					class="project-card" 
 					style="transition-delay: {i * 100}ms"
 				>
-					<!-- ECG Graph Overlay -->
-					<div class="ecg-graph">
-						<svg viewBox="0 0 600 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-							<polyline
-								class="ecg-line"
-								fill="none"
-								stroke="rgba(200, 200, 210, 0.35)"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								points="0,40 30,40 50,40 60,38 70,42 80,40 100,40 110,40 120,25 130,55 140,10 150,70 160,20 170,40 180,40 200,40 220,40 230,38 240,42 250,40 270,40 280,40 290,20 300,60 310,5 320,75 330,15 340,40 350,40 370,40 390,40 400,38 410,42 420,40 440,40 450,40 460,30 470,50 480,15 490,65 500,25 510,40 520,40 540,40 560,40 570,38 580,42 600,40"
-							/>
-						</svg>
-					</div>
 					<div class="project-status">{project.status}</div>
 					<h3 class="project-title">{project.title}</h3>
 					<p class="project-description">{project.description}</p>
@@ -1030,52 +1016,25 @@
 		display: block;
 	}
 
+	.project-card::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 0;
+		height: 3px;
+		background: linear-gradient(90deg, #667eea, #764ba2);
+		transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
 	.project-card:hover {
-		border-color: var(--gray-300);
-		box-shadow: 0 24px 64px rgba(0, 0, 0, 0.08);
+		border-color: var(--gray-900);
+		box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12);
 		transform: translateY(-8px);
 	}
 
-	/* ===================== ECG GRAPH EFFECT ===================== */
-	.ecg-graph {
-		position: absolute;
-		top: 0;
-		left: 0;
+	.project-card:hover::after {
 		width: 100%;
-		height: 100%;
-		pointer-events: none;
-		opacity: 0;
-		transition: opacity 0.4s ease;
-		z-index: 1;
-		overflow: hidden;
-	}
-
-	.ecg-graph svg {
-		width: 100%;
-		height: 100%;
-	}
-
-	.ecg-line {
-		stroke-dasharray: 1800;
-		stroke-dashoffset: 1800;
-		transition: none;
-	}
-
-	.project-card:hover .ecg-graph {
-		opacity: 1;
-	}
-
-	.project-card:hover .ecg-line {
-		animation: ecg-draw 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-	}
-
-	@keyframes ecg-draw {
-		0% {
-			stroke-dashoffset: 1800;
-		}
-		100% {
-			stroke-dashoffset: 0;
-		}
 	}
 
 	.project-status {

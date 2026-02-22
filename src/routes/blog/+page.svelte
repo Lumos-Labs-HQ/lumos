@@ -80,7 +80,7 @@
 	<div class="container">
 		<div class="posts-grid">
 			{#each posts as post, i}
-				<a href="/blog/{post.id}" class="post-card" style="transition-delay: {i * 100}ms">
+				<div class="post-card" style="transition-delay: {i * 100}ms">
 					<div class="post-image" style="background-image: url({post.coverImage || post.image})"></div>
 					<div class="post-content">
 						<div class="post-meta">
@@ -100,7 +100,7 @@
 							<span class="author-name">{post.author}</span>
 						</div>
 					</div>
-				</a>
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -206,8 +206,6 @@
 		border-radius: var(--radius);
 		overflow: hidden;
 		transition: all var(--transition);
-		text-decoration: none;
-		color: inherit;
 		display: flex;
 		flex-direction: column;
 	}

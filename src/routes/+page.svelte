@@ -171,27 +171,32 @@
 		{
 			title: 'Full-Stack Development',
 			description: 'End-to-end web and mobile applications using modern stacks — React, Svelte, Next.js, Go, Rust, and more.',
-			icon: '◈'
+			icon: '◈',
+			gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
 		},
 		{
 			title: 'AI & Machine Learning',
 			description: 'Custom AI solutions, LLM integration, computer vision, and intelligent automation powered by cutting-edge models.',
-			icon: '◉'
+			icon: '◉',
+			gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
 		},
 		{
 			title: 'Systems Engineering',
 			description: 'Low-level systems programming, performance optimization, and infrastructure tooling.',
-			icon: '⬡'
+			icon: '⬡',
+			gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
 		},
 		{
 			title: 'Cloud & DevOps',
 			description: 'Architecture design, CI/CD pipelines, Kubernetes orchestration, and scalable cloud infrastructure.',
-			icon: '△'
+			icon: '△',
+			gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
 		},
 		{
 			title: 'Mobile Development',
 			description: 'Native and cross-platform mobile apps for iOS and Android using Flutter, React Native, and Swift.',
-			icon: '◇'
+			icon: '◇',
+			gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
 		}
 	];
 
@@ -223,7 +228,7 @@
 </nav>
 
 <!-- Hero Section -->
-<header class="hero" class:hero-visible={mounted}>
+<header class="hero" class:hero-visible={mounted} style="--scroll: {scrollY}">
 	<div class="hero-bg">
 		<div class="grid-pattern"></div>
 	</div>
@@ -352,10 +357,16 @@
 
 		<div class="services-grid">
 			{#each services as service, i}
-				<div class="service-card" style="transition-delay: {i * 100}ms">
+				<div 
+					class="service-card" 
+					style="transition-delay: {i * 100}ms; --gradient: {service.gradient}"
+					onmousemove={(e) => handleCardMouseMove(e, e.currentTarget)}
+					onmouseleave={(e) => handleCardMouseLeave(e.currentTarget)}
+				>
 					<span class="service-icon">{service.icon}</span>
 					<h3 class="service-title">{service.title}</h3>
 					<p class="service-description">{service.description}</p>
+					<div class="service-gradient"></div>
 				</div>
 			{/each}
 		</div>
@@ -382,32 +393,62 @@
 				<p class="section-subtitle">
 					Drop us a line. We respond within 24 hours.
 				</p>
-				<a href="https://cal.com/swarnendug7/15min" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 24px;">
-					Schedule a Call →
-				</a>
 			</div>
 
-			<div class="contact-grid">
-				<div class="contact-info">
-					<div class="contact-item">
-						<span class="contact-label">Email</span>
-						<a href="mailto:founders@lumoslab.tech" class="contact-value">founders@lumoslab.tech</a>
-					</div>
-					<div class="contact-item">
-						<span class="contact-label">Based in</span>
-						<span class="contact-value">India — Working Globally</span>
-					</div>
-					<div class="contact-item">
-						<span class="contact-label">Availability</span>
-						<span class="contact-value contact-available">● Open for projects</span>
+			<div class="contact-layout">
+				<div class="contact-form-wrapper">
+					<form class="contact-form" onsubmit={(e) => e.preventDefault()}>
+						<div class="form-group">
+							<label for="name">Name</label>
+							<input type="text" id="name" placeholder="Your name" required />
+						</div>
+						<div class="form-group">
+							<label for="email">Email</label>
+							<input type="email" id="email" placeholder="your@email.com" required />
+						</div>
+						<div class="form-group">
+							<label for="message">Message</label>
+							<textarea id="message" rows="5" placeholder="Tell us about your project..." required></textarea>
+						</div>
+						<button type="submit" class="btn btn-primary">Send Message</button>
+					</form>
+
+					<div class="newsletter-box">
+						<h3>Stay Updated</h3>
+						<p>Get notified about new projects and updates.</p>
+						<form class="newsletter-form" onsubmit={(e) => e.preventDefault()}>
+							<input type="email" placeholder="your@email.com" required />
+							<button type="submit" class="btn btn-secondary">Subscribe</button>
+						</form>
 					</div>
 				</div>
 
-				<div class="contact-links">
-					<a href="https://github.com/Lumos-Labs-HQ" class="contact-social" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-					<a href="https://x.com" class="contact-social" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
-					<a href="https://linkedin.com" class="contact-social" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-					<a href="https://discord.gg/5ScEAsMT" class="contact-social" target="_blank" rel="noopener noreferrer">Discord ↗</a>
+				<div class="contact-info-wrapper">
+					<div class="contact-info">
+						<div class="contact-item">
+							<span class="contact-label">Email</span>
+							<a href="mailto:founders@lumoslab.tech" class="contact-value">founders@lumoslab.tech</a>
+						</div>
+						<div class="contact-item">
+							<span class="contact-label">Based in</span>
+							<span class="contact-value">India — Working Globally</span>
+						</div>
+						<div class="contact-item">
+							<span class="contact-label">Availability</span>
+							<span class="contact-value contact-available">● Open for projects</span>
+						</div>
+					</div>
+
+					<div class="contact-links">
+						<a href="https://github.com/Lumos-Labs-HQ" class="contact-social" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+						<a href="https://x.com" class="contact-social" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
+						<a href="https://linkedin.com" class="contact-social" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+						<a href="https://discord.gg/5ScEAsMT" class="contact-social" target="_blank" rel="noopener noreferrer">Discord ↗</a>
+					</div>
+
+					<a href="https://cal.com/swarnendug7/15min" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 32px; width: 100%;">
+						Schedule a Call →
+					</a>
 				</div>
 			</div>
 		</div>
@@ -584,6 +625,8 @@
 		opacity: 0.4;
 		mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
 		-webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+		transform: translateY(calc(var(--scroll) * 0.3px));
+		will-change: transform;
 	}
 
 	.hero-content {
@@ -1026,11 +1069,25 @@
 		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
 	}
 
+	.service-gradient {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: var(--gradient);
+		opacity: 0;
+		transition: opacity var(--transition);
+	}
+
 	.service-card:hover {
 		background: rgba(255, 255, 255, 0.85);
 		border-color: rgba(255, 255, 255, 0.5);
-		transform: translateY(-6px);
 		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+	}
+
+	.service-card:hover .service-gradient {
+		opacity: 1;
 	}
 
 	.service-icon {
@@ -1039,6 +1096,11 @@
 		margin-bottom: 24px;
 		color: var(--gray-700);
 		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+		transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+
+	.service-card:hover .service-icon {
+		transform: scale(1.2) rotate(5deg);
 	}
 
 	.service-title {
@@ -1097,17 +1159,130 @@
 	}
 
 	/* ===================== CONTACT ===================== */
-	.contact-grid {
+	.contact-layout {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1.2fr 1fr;
 		gap: 64px;
 		margin-top: 48px;
+	}
+
+	.contact-form-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+
+	.contact-form {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.form-group label {
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--gray-700);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.form-group input,
+	.form-group textarea {
+		padding: 14px 18px;
+		border: 1px solid var(--gray-300);
+		border-radius: 8px;
+		font-size: 0.95rem;
+		font-family: inherit;
+		color: var(--gray-900);
+		background: var(--white);
+		transition: all var(--transition);
+	}
+
+	.form-group input:focus,
+	.form-group textarea:focus {
+		outline: none;
+		border-color: var(--gray-900);
+		box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+	}
+
+	.form-group textarea {
+		resize: vertical;
+		min-height: 120px;
+	}
+
+	.newsletter-box {
+		background: var(--gray-900);
+		border-radius: var(--radius);
+		padding: 32px;
+		color: var(--white);
+	}
+
+	.newsletter-box h3 {
+		font-family: 'Space Grotesk', sans-serif;
+		font-size: 1.3rem;
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
+
+	.newsletter-box p {
+		font-size: 0.9rem;
+		color: var(--gray-400);
+		margin-bottom: 20px;
+	}
+
+	.newsletter-form {
+		display: flex;
+		gap: 12px;
+	}
+
+	.newsletter-form input {
+		flex: 1;
+		padding: 12px 16px;
+		border: 1px solid var(--gray-700);
+		border-radius: 8px;
+		font-size: 0.9rem;
+		background: rgba(255, 255, 255, 0.1);
+		color: var(--white);
+		transition: all var(--transition);
+	}
+
+	.newsletter-form input::placeholder {
+		color: var(--gray-500);
+	}
+
+	.newsletter-form input:focus {
+		outline: none;
+		border-color: var(--white);
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	.newsletter-form .btn-secondary {
+		background: var(--white);
+		color: var(--gray-900);
+		padding: 12px 24px;
+		white-space: nowrap;
+	}
+
+	.newsletter-form .btn-secondary:hover {
+		background: var(--gray-100);
+	}
+
+	.contact-info-wrapper {
+		display: flex;
+		flex-direction: column;
 	}
 
 	.contact-info {
 		display: flex;
 		flex-direction: column;
 		gap: 32px;
+		margin-bottom: 40px;
 	}
 
 	.contact-item {
@@ -1264,9 +1439,13 @@
 			text-align: center;
 		}
 
-		.contact-grid {
+		.contact-layout {
 			grid-template-columns: 1fr;
 			gap: 48px;
+		}
+
+		.newsletter-form {
+			flex-direction: column;
 		}
 
 		.footer-inner {

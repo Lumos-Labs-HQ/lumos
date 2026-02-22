@@ -89,6 +89,12 @@
 		}
 	];
 
+<<<<<<< Updated upstream
+=======
+
+
+
+>>>>>>> Stashed changes
 	// Products data - TODO: Add real products later
 	/*
 	const products = [

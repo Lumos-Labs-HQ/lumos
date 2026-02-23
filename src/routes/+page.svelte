@@ -58,12 +58,14 @@
 		const y = e.clientY - rect.top;
 		const centerX = rect.width / 2;
 		const centerY = rect.height / 2;
-		const rotateX = (y - centerY) / 20;
-		const rotateY = (centerX - x) / 20;
-		cardEl.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+		const rotateX = (y - centerY) / 15;
+		const rotateY = (centerX - x) / 15;
+		cardEl.style.transition = 'transform 0.08s linear';
+		cardEl.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
 	}
 
 	function handleCardMouseLeave(cardEl: HTMLElement) {
+		cardEl.style.transition = 'transform 0.25s ease-out';
 		cardEl.style.transform = '';
 	}
 
@@ -126,17 +128,98 @@
 		}
 	];
 
-	const techStack = [
-		{ name: 'Go', icon: '⚡' },
-		{ name: 'Rust', icon: '🦀' },
-		{ name: 'TypeScript', icon: '📘' },
-		{ name: 'Python', icon: '🐍' },
-		{ name: 'C++', icon: '⚙️' },
-		{ name: 'Svelte', icon: '🔥' },
-		{ name: 'React', icon: '⚛️' },
-		{ name: 'PostgreSQL', icon: '🐘' },
-		{ name: 'Docker', icon: '🐳' },
-		{ name: 'Kubernetes', icon: '☸️' }
+	// Row 1: Languages
+	const techStackRow1 = [
+		{ name: 'Go', icon: 'devicon-go-original-wordmark colored' },
+		{ name: 'Rust', icon: 'devicon-rust-original' },
+		{ name: 'TypeScript', icon: 'devicon-typescript-plain colored' },
+		{ name: 'JavaScript', icon: 'devicon-javascript-plain colored' },
+		{ name: 'Python', icon: 'devicon-python-plain colored' },
+		{ name: 'C++', icon: 'devicon-cplusplus-plain colored' },
+		{ name: 'C', icon: 'devicon-c-plain colored' },
+		{ name: 'Dart', icon: 'devicon-dart-plain colored' },
+		{ name: 'PHP', icon: 'devicon-php-plain colored' },
+		{ name: 'Java', icon: 'devicon-java-plain colored' },
+		{ name: 'Swift', icon: 'devicon-swift-plain colored' },
+		{ name: 'Kotlin', icon: 'devicon-kotlin-plain colored' },
+		{ name: 'Elixir', icon: 'devicon-elixir-plain colored' }
+	];
+
+	// Row 2: Frameworks & Frontend
+	const techStackRow2 = [
+		{ name: 'Svelte', icon: 'devicon-svelte-plain colored' },
+		{ name: 'React', icon: 'devicon-react-original colored' },
+		{ name: 'Next.js', icon: 'devicon-nextjs-plain' },
+		{ name: 'Nuxt.js', icon: 'devicon-nuxt-plain colored' },
+		{ name: 'Vue', icon: 'devicon-vuejs-plain colored' },
+		{ name: 'Angular', icon: 'devicon-angular-plain colored' },
+		{ name: 'Astro', icon: 'devicon-astro-plain' },
+		{ name: 'Remix', icon: 'devicon-remix-original' },
+		{ name: 'Flutter', icon: 'devicon-flutter-plain colored' },
+		{ name: 'Tailwind', icon: 'devicon-tailwindcss-original colored' },
+		{ name: 'Vite', icon: 'devicon-vitejs-plain colored' }
+	];
+
+	// Row 3: Backend & Frameworks
+	const techStackRow3 = [
+		{ name: 'Fiber', icon: 'devicon-fiber-plain colored' },
+		{ name: 'Flask', icon: 'devicon-flask-original' },
+		{ name: 'FastAPI', icon: 'devicon-fastapi-plain colored' },
+		{ name: 'Django', icon: 'devicon-django-plain' },
+		{ name: 'Express', icon: 'devicon-express-original' },
+		{ name: 'Laravel', icon: 'devicon-laravel-original colored' },
+		{ name: 'Bun', icon: 'devicon-bun-plain colored' },
+		{ name: 'Deno', icon: 'devicon-denojs-original colored' },
+		{ name: 'Kafka', icon: 'devicon-apachekafka-original' },
+		{ name: 'RabbitMQ', icon: 'devicon-rabbitmq-original colored' },
+		{ name: 'GraphQL', icon: 'devicon-graphql-plain colored' }
+	];
+
+	// Row 4: Databases & Storage
+	const techStackRow4 = [
+		{ name: 'PostgreSQL', icon: 'devicon-postgresql-plain colored' },
+		{ name: 'MySQL', icon: 'devicon-mysql-plain colored' },
+		{ name: 'MongoDB', icon: 'devicon-mongodb-plain colored' },
+		{ name: 'Redis', icon: 'devicon-redis-plain colored' },
+		{ name: 'SQLite', icon: 'devicon-sqlite-plain colored' },
+		{ name: 'CockroachDB', icon: 'devicon-cockroachdb-plain colored' },
+		{ name: 'Neo4j', icon: 'devicon-neo4j-plain colored' },
+		{ name: 'Cassandra', icon: 'devicon-cassandra-plain colored' },
+		{ name: 'Firebase', icon: 'devicon-firebase-plain colored' },
+		{ name: 'Supabase', icon: 'devicon-supabase-plain colored' },
+		{ name: 'Elasticsearch', icon: 'devicon-elasticsearch-plain colored' },
+		{ name: 'Prisma', icon: 'devicon-prisma-original' },
+		{ name: 'DynamoDB', icon: 'devicon-dynamodb-plain colored' }
+	];
+
+	// Row 5: DevOps & Cloud
+	const techStackRow5 = [
+		{ name: 'Docker', icon: 'devicon-docker-plain colored' },
+		{ name: 'Kubernetes', icon: 'devicon-kubernetes-plain colored' },
+		{ name: 'Helm', icon: 'devicon-helm-original colored' },
+		{ name: 'ArgoCD', icon: 'devicon-argocd-plain colored' },
+		{ name: 'Jenkins', icon: 'devicon-jenkins-plain colored' },
+		{ name: 'Terraform', icon: 'devicon-terraform-plain colored' },
+		{ name: 'Ansible', icon: 'devicon-ansible-plain colored' },
+		{ name: 'Vault', icon: 'devicon-vault-original colored' },
+		{ name: 'Nginx', icon: 'devicon-nginx-original colored' },
+		{ name: 'Vercel', icon: 'devicon-vercel-original' },
+		{ name: 'Cloudflare', icon: 'devicon-cloudflare-plain colored' },
+		{ name: 'Netlify', icon: 'devicon-netlify-plain colored' }
+	];
+
+	// Row 6: Cloud, AI & Monitoring
+	const techStackRow6 = [
+		{ name: 'AWS', icon: 'devicon-amazonwebservices-plain-wordmark colored' },
+		{ name: 'GCP', icon: 'devicon-googlecloud-plain colored' },
+		{ name: 'Azure', icon: 'devicon-azure-plain colored' },
+		{ name: 'GitHub Actions', icon: 'devicon-githubactions-plain colored' },
+		{ name: 'Linux', icon: 'devicon-linux-plain colored' },
+		{ name: 'TensorFlow', icon: 'devicon-tensorflow-original colored' },
+		{ name: 'PyTorch', icon: 'devicon-pytorch-original colored' },
+		{ name: 'Grafana', icon: 'devicon-grafana-plain colored' },
+		{ name: 'Prometheus', icon: 'devicon-prometheus-original colored' },
+		{ name: 'Consul', icon: 'devicon-consul-original colored' }
 	];
 
 	const team = [
@@ -146,36 +229,6 @@
 			bio: 'Systems architect with a passion for building tools that developers love.'
 		}
 	];
-
-	// Products data - TODO: Add real products later
-	/*
-	const products = [
-		{
-			name: 'lumos-ui',
-			description: 'Minimalist, accessible component library with zero runtime overhead. Designed for modern frameworks.',
-			downloads: '12k+',
-			language: 'TypeScript'
-		},
-		{
-			name: 'lumos-auth-sdk',
-			description: 'Drop-in SDK for integrating Lumos Auth into any application. Supports React, Svelte, Vue, and vanilla JS.',
-			downloads: '8k+',
-			language: 'TypeScript'
-		},
-		{
-			name: 'lumos-cli',
-			description: 'Developer toolkit for scaffolding, building, and deploying Lumos-powered projects from the terminal.',
-			downloads: '5k+',
-			language: 'Rust'
-		},
-		{
-			name: 'lumos-db',
-			description: 'Lightweight, embedded database with a query builder that compiles to zero-cost abstractions.',
-			downloads: '3k+',
-			language: 'Go'
-		}
-	];
-	*/
 
 	const services = [
 		{
@@ -210,6 +263,7 @@
 		}
 	];
 
+	// mobileMenuOpen moved to layout
 </script>
 
 <svelte:head>
@@ -309,19 +363,19 @@
 	</div>
 {/if}
 
-
 <!-- Hero Section -->
 <header class="hero" class:hero-visible={mounted} style="--scroll: {scrollY}">
 	<div class="hero-bg">
 		<div class="grid-pattern"></div>
+		<div class="hero-grain"></div>
+		<div class="hero-glow"></div>
 	</div>
 
 	<div class="hero-content">
-		<div class="hero-badge">Innovation Studio</div>
+		<div class="hero-badge"><span class="badge-dot"></span>Innovation Studio</div>
 		<h1 class="hero-title">
-			We build what<br />
-			<CanvasText text="doesn't exist"
-			 colors={['rgba(82,82,82,1)','rgba(82,82,82,0.9)','rgba(82,82,82,0.8)','rgba(100,100,100,0.9)','rgba(100,100,100,0.8)','rgba(115,115,115,0.9)','rgba(115,115,115,0.8)','rgba(115,115,115,0.7)','rgba(130,130,130,0.8)','rgba(130,130,130,0.7)']} lineGap={4} animationDuration={25} /> yet.
+			<span class="hero-line"><span class="hero-line-inner">We build what</span></span>
+			<span class="hero-line"><span class="hero-line-inner hero-accent">doesn't exist yet.</span></span>
 		</h1>
 		<p class="hero-subtitle">
 			Lumos is an innovation studio building custom authentication systems, language migration engines, and cutting-edge open-source tools.
@@ -439,6 +493,7 @@
 
 		<div class="services-grid">
 			{#each services as service, i}
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div 
 					class="service-card" 
 					style="transition-delay: {i * 100}ms; --gradient: {service.gradient}"
@@ -465,12 +520,88 @@
 	</div>
 </section>
 
+<!-- Tech Stack Section -->
+<section id="tech-stack" class="section section-compact" data-animate class:section-visible={isVisible('tech-stack')}>
+	<div class="container">
+		<div class="section-header section-header-center">
+			<span class="section-tag">03</span>
+			<h2 class="section-title">Our Tech Stack</h2>
+			<p class="section-subtitle section-subtitle-center">
+				The tools and technologies we use to build exceptional software.
+			</p>
+		</div>
+	</div>
+
+	<div class="marquee-wrapper">
+		<div class="marquee-row">
+			<div class="marquee-track marquee-left">
+				{#each [...techStackRow1, ...techStackRow1] as tech}
+					<div class="tech-pill">
+						<i class={tech.icon}></i>
+						<span>{tech.name}</span>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="marquee-row">
+			<div class="marquee-track marquee-right">
+				{#each [...techStackRow2, ...techStackRow2] as tech}
+					<div class="tech-pill">
+						<i class={tech.icon}></i>
+						<span>{tech.name}</span>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="marquee-row">
+			<div class="marquee-track marquee-left-slow">
+				{#each [...techStackRow3, ...techStackRow3] as tech}
+					<div class="tech-pill">
+						<i class={tech.icon}></i>
+						<span>{tech.name}</span>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="marquee-row">
+			<div class="marquee-track marquee-right-slow">
+				{#each [...techStackRow4, ...techStackRow4] as tech}
+					<div class="tech-pill">
+						<i class={tech.icon}></i>
+						<span>{tech.name}</span>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="marquee-row">
+			<div class="marquee-track marquee-left">
+				{#each [...techStackRow5, ...techStackRow5] as tech}
+					<div class="tech-pill">
+						<i class={tech.icon}></i>
+						<span>{tech.name}</span>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="marquee-row">
+			<div class="marquee-track marquee-right">
+				{#each [...techStackRow6, ...techStackRow6] as tech}
+					<div class="tech-pill">
+						<i class={tech.icon}></i>
+						<span>{tech.name}</span>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</div>
+</section>
+
 <!-- Contact Section -->
 <section id="contact" class="section section-alt" data-animate class:section-visible={isVisible('contact')}>
 	<div class="container">
 		<div class="contact-content">
 			<div class="section-header">
-				<span class="section-tag">03</span>
+				<span class="section-tag">04</span>
 				<h2 class="section-title">Let's Talk</h2>
 				<p class="section-subtitle">
 					Drop us a line. We respond within 24 hours.
@@ -574,8 +705,8 @@
 		--black: #0a0a0a;
 		--radius: 12px;
 		--radius-sm: 8px;
-		--transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-		--transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		--transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+		--transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	/* ===================== LOADING SCREEN ===================== */
@@ -612,8 +743,6 @@
 			pointer-events: none;
 		}
 	}
-
-
 
 	/* ===================== HERO ===================== */
 	.hero {
@@ -675,19 +804,26 @@
 
 	.hero-title {
 		font-family: 'Space Grotesk', sans-serif;
-		font-size: clamp(2.8rem, 7vw, 5.5rem);
+		font-size: clamp(3rem, 7.5vw, 6rem);
 		font-weight: 700;
-		line-height: 1.05;
-		letter-spacing: -0.04em;
-		color: var(--gray-900);
+		line-height: 1.02;
+		letter-spacing: -0.05em;
+		color: var(--black);
 		margin-bottom: 28px;
 	}
 
 	.hero-accent {
-		background: linear-gradient(135deg, var(--gray-600), var(--gray-900));
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, var(--gray-900) 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
+		background-size: 200% 200%;
+		animation: gradientShift 5s ease-in-out infinite;
+	}
+
+	@keyframes gradientShift {
+		0%, 100% { background-position: 0% 50%; }
+		50% { background-position: 100% 50%; }
 	}
 
 	.hero-subtitle {
@@ -765,9 +901,9 @@
 
 	.stat-value {
 		font-family: 'Space Grotesk', sans-serif;
-		font-size: 1.6rem;
-		font-weight: 600;
-		color: var(--gray-900);
+		font-size: 1.8rem;
+		font-weight: 700;
+		color: var(--black);
 	}
 
 	.stat-label {
@@ -793,6 +929,10 @@
 		background: var(--white);
 	}
 
+	.section-compact {
+		padding: 80px 32px 40px;
+	}
+
 	.container {
 		max-width: 1200px;
 		margin: 0 auto;
@@ -814,10 +954,10 @@
 
 	.section-title {
 		font-family: 'Space Grotesk', sans-serif;
-		font-size: clamp(2rem, 4vw, 3.2rem);
+		font-size: clamp(2.2rem, 4.5vw, 3.5rem);
 		font-weight: 700;
-		letter-spacing: -0.03em;
-		color: var(--gray-900);
+		letter-spacing: -0.04em;
+		color: var(--black);
 		margin-bottom: 16px;
 	}
 
@@ -845,16 +985,10 @@
 	}
 
 	/* Scroll animation */
-	.section.section-visible .projects-grid,
-	.section.section-visible .services-grid,
-	.section.section-visible .contact-content {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
 	.projects-grid,
 	.services-grid,
-	.contact-content {
+	.contact-content,
+	.marquee-wrapper {
 		opacity: 0;
 		transform: translateY(40px);
 		transition: all var(--transition-slow);
@@ -862,7 +996,20 @@
 
 	.section.section-visible .projects-grid,
 	.section.section-visible .services-grid,
-	.section.section-visible .contact-content {
+	.section.section-visible .contact-content,
+	.section.section-visible .marquee-wrapper {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	/* Section header slide-in */
+	.section .section-header {
+		opacity: 0;
+		transform: translateY(25px);
+		transition: opacity 0.6s ease, transform 0.6s ease;
+	}
+
+	.section.section-visible .section-header {
 		opacity: 1;
 		transform: translateY(0);
 	}
@@ -925,11 +1072,11 @@
 
 	.project-title {
 		font-family: 'Space Grotesk', sans-serif;
-		font-size: 1.35rem;
-		font-weight: 600;
-		color: var(--gray-900);
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: var(--black);
 		margin-bottom: 12px;
-		letter-spacing: -0.01em;
+		letter-spacing: -0.02em;
 		position: relative;
 	}
 
@@ -1121,7 +1268,7 @@
 		margin-bottom: 24px;
 		color: var(--gray-700);
 		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-		transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 	}
 
 	.service-card:hover .service-icon {
@@ -1130,11 +1277,11 @@
 
 	.service-title {
 		font-family: 'Space Grotesk', sans-serif;
-		font-size: 1.1rem;
-		font-weight: 600;
-		color: var(--gray-900);
+		font-size: 1.15rem;
+		font-weight: 700;
+		color: var(--black);
 		margin-bottom: 12px;
-		letter-spacing: -0.01em;
+		letter-spacing: -0.02em;
 	}
 
 	.service-description {
@@ -1159,11 +1306,11 @@
 
 	.cta-content h3 {
 		font-family: 'Space Grotesk', sans-serif;
-		font-size: 1.6rem;
-		font-weight: 600;
+		font-size: 1.7rem;
+		font-weight: 700;
 		color: var(--white);
 		margin-bottom: 8px;
-		letter-spacing: -0.02em;
+		letter-spacing: -0.03em;
 	}
 
 	.cta-content p {
@@ -1389,6 +1536,210 @@
 		color: var(--gray-400);
 	}
 
+	/* ===================== HERO ENHANCEMENTS ===================== */
+	.hero-grain {
+		position: absolute;
+		inset: 0;
+		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	.hero-glow {
+		position: absolute;
+		top: 20%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 600px;
+		height: 600px;
+		background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
+		border-radius: 50%;
+		pointer-events: none;
+		animation: glowPulse 6s ease-in-out infinite;
+	}
+
+	@keyframes glowPulse {
+		0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+		50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+	}
+
+	.hero-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.badge-dot {
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		background: #3b9;
+		border-radius: 50%;
+		animation: dotPulse 2s ease-in-out infinite;
+	}
+
+	@keyframes dotPulse {
+		0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(51, 187, 153, 0.4); }
+		50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(51, 187, 153, 0); }
+	}
+
+	/* Text reveal animation */
+	.hero-line {
+		display: block;
+		overflow: hidden;
+	}
+
+	.hero-line-inner {
+		display: inline-block;
+		transform: translateY(110%);
+		transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.hero-visible .hero-line-inner {
+		transform: translateY(0);
+	}
+
+	.hero-visible .hero-line:nth-child(1) .hero-line-inner {
+		transition-delay: 0.1s;
+	}
+
+	.hero-visible .hero-line:nth-child(3) .hero-line-inner {
+		transition-delay: 0.25s;
+	}
+
+	/* ===================== TECH STACK SECTION ===================== */
+	.section-header-center {
+		text-align: center;
+	}
+
+	.section-subtitle-center {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.marquee-wrapper {
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		padding: 0;
+		mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+		-webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+	}
+
+	.marquee-row {
+		overflow: hidden;
+		padding: 6px 0;
+	}
+
+	.marquee-row:hover .marquee-track {
+		animation-play-state: paused;
+	}
+
+	.marquee-track {
+		display: flex;
+		gap: 16px;
+		width: max-content;
+		will-change: transform;
+	}
+
+	.marquee-left {
+		animation: marqueeLeft 35s linear infinite;
+	}
+
+	.marquee-right {
+		animation: marqueeRight 32s linear infinite;
+	}
+
+	.marquee-left-slow {
+		animation: marqueeLeft 42s linear infinite;
+	}
+
+	.marquee-right-slow {
+		animation: marqueeRight 38s linear infinite;
+	}
+
+	@keyframes marqueeLeft {
+		0% { transform: translateX(0); }
+		100% { transform: translateX(-50%); }
+	}
+
+	@keyframes marqueeRight {
+		0% { transform: translateX(-50%); }
+		100% { transform: translateX(0); }
+	}
+
+	.tech-pill {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 14px 28px;
+		background: var(--white);
+		border: 1px solid var(--gray-200);
+		border-radius: 100px;
+		white-space: nowrap;
+		transition: all var(--transition);
+		cursor: default;
+		flex-shrink: 0;
+	}
+
+	.tech-pill:hover {
+		border-color: var(--gray-400);
+		/* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */
+		background: var(--gray-50);
+	}
+
+	.tech-pill i {
+		font-size: 1.6rem;
+		line-height: 1;
+	}
+
+	.tech-pill span {
+		font-family: 'Space Grotesk', sans-serif;
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--gray-800);
+		letter-spacing: -0.01em;
+	}
+
+	/* ===================== STAGGERED CARD ANIMATIONS ===================== */
+	.section.section-visible .project-card {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.project-card {
+		opacity: 0;
+		transform: translateY(30px);
+		transition: opacity 0.5s ease, transform 0.5s ease, box-shadow var(--transition), border-color var(--transition);
+	}
+
+	.section.section-visible .service-card {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	.service-card {
+		opacity: 0;
+		transform: translateY(20px) scale(0.97);
+		transition: opacity 0.5s ease, transform 0.5s ease, background var(--transition), border-color var(--transition), box-shadow var(--transition);
+	}
+
+	/* Stagger delays for cards */
+	.section.section-visible .project-card:nth-child(1),
+	.section.section-visible .service-card:nth-child(1) { transition-delay: 0.05s; }
+	.section.section-visible .project-card:nth-child(2),
+	.section.section-visible .service-card:nth-child(2) { transition-delay: 0.12s; }
+	.section.section-visible .project-card:nth-child(3),
+	.section.section-visible .service-card:nth-child(3) { transition-delay: 0.19s; }
+	.section.section-visible .project-card:nth-child(4),
+	.section.section-visible .service-card:nth-child(4) { transition-delay: 0.26s; }
+	.section.section-visible .project-card:nth-child(5),
+	.section.section-visible .service-card:nth-child(5) { transition-delay: 0.33s; }
+	.section.section-visible .project-card:nth-child(6) { transition-delay: 0.4s; }
+	.section.section-visible .project-card:nth-child(7) { transition-delay: 0.47s; }
+	.section.section-visible .project-card:nth-child(8) { transition-delay: 0.54s; }
+
 	/* ===================== BACK TO TOP ===================== */
 	.back-to-top {
 		position: fixed;
@@ -1436,6 +1787,27 @@
 	}
 
 	@media (max-width: 768px) {
+		.section-compact {
+			padding: 60px 24px 24px;
+		}
+
+		.marquee-wrapper {
+			gap: 0;
+		}
+
+		.tech-pill {
+			padding: 10px 20px;
+			gap: 10px;
+		}
+
+		.tech-pill i {
+			font-size: 1.3rem;
+		}
+
+		.tech-pill span {
+			font-size: 0.85rem;
+		}
+
 		.hero {
 			padding: 100px 24px 60px;
 		}

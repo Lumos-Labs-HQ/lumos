@@ -6,6 +6,8 @@
 	inject();
 
 	let { children } = $props();
+	let scrollY = $state(0);
+	let mobileMenuOpen = $state(false);
 </script>
 
 <svelte:head>
@@ -16,7 +18,7 @@
 	<meta name="author" content="Lumos Labs" />
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 	<link rel="canonical" href="https://lumoslab.tech/" />
-	
+
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://lumoslab.tech/" />
@@ -80,7 +82,31 @@
 	<\/script>`}
 </svelte:head>
 
-<Navbar />
+<svelte:window bind:scrollY />
+
+<!-- Navigation -->
+<nav class="nav" class:nav-scrolled={scrollY > 50}>
+	<div class="nav-inner">
+		<a href="/" class="logo">
+			<span class="logo-mark">◉</span>
+			<span class="logo-text">Lumos</span>
+		</a>
+
+		<div class="nav-links" class:nav-links-open={mobileMenuOpen}>
+			<a href="/#projects" onclick={() => (mobileMenuOpen = false)}>Projects</a>
+			<a href="/#services" onclick={() => (mobileMenuOpen = false)}>Services</a>
+			<a href="/blog" onclick={() => (mobileMenuOpen = false)}>Blog</a>
+			<a href="/about" onclick={() => (mobileMenuOpen = false)}>About</a>
+			<a href="/#contact" class="nav-cta" onclick={() => (mobileMenuOpen = false)}>Get in Touch</a>
+		</div>
+
+		<button class="mobile-toggle" onclick={() => (mobileMenuOpen = !mobileMenuOpen)} aria-label="Toggle menu">
+			<span class="toggle-line" class:open={mobileMenuOpen}></span>
+			<span class="toggle-line" class:open={mobileMenuOpen}></span>
+		</button>
+	</div>
+</nav>
+
 {@render children()}
 
 <style>
@@ -123,5 +149,149 @@
 
 	:global(::-webkit-scrollbar-thumb:hover) {
 		background: #a3a3a3;
+	}
+
+	/* ===================== NAVIGATION ===================== */
+	.nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 100;
+		padding: 20px 0;
+		transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.nav-scrolled {
+		background: rgba(250, 250, 250, 0.85);
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+		padding: 14px 0;
+		border-bottom: 1px solid #e5e5e5;
+	}
+
+	.nav-inner {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 32px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		text-decoration: none;
+		color: #171717;
+	}
+
+	.logo-mark {
+		font-size: 1.4rem;
+		line-height: 1;
+	}
+
+	.logo-text {
+		font-family: 'Space Grotesk', sans-serif;
+		font-size: 1.3rem;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.nav-links {
+		display: flex;
+		align-items: center;
+		gap: 36px;
+	}
+
+	.nav-links a {
+		text-decoration: none;
+		color: #525252;
+		font-size: 0.9rem;
+		font-weight: 450;
+		transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+		letter-spacing: 0.01em;
+	}
+
+	.nav-links a:hover {
+		color: #171717;
+	}
+
+	.nav-cta {
+		background: #171717 !important;
+		color: #ffffff !important;
+		padding: 10px 22px;
+		border-radius: 100px;
+		font-size: 0.85rem !important;
+		font-weight: 500 !important;
+		transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	}
+
+	.nav-cta:hover {
+		background: #0a0a0a !important;
+		transform: translateY(-1px);
+	}
+
+	.mobile-toggle {
+		display: none;
+		flex-direction: column;
+		gap: 5px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 4px;
+	}
+
+	.toggle-line {
+		display: block;
+		width: 22px;
+		height: 2px;
+		background: #171717;
+		border-radius: 2px;
+		transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.toggle-line.open:first-child {
+		transform: rotate(45deg) translate(2.5px, 2.5px);
+	}
+
+	.toggle-line.open:last-child {
+		transform: rotate(-45deg) translate(2.5px, -2.5px);
+	}
+
+	@media (max-width: 768px) {
+		.nav-links {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(250, 250, 250, 0.98);
+			backdrop-filter: blur(20px);
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 32px;
+			z-index: 90;
+		}
+
+		.nav-links-open {
+			display: flex;
+		}
+
+		.nav-links a {
+			font-size: 1.3rem;
+		}
+
+		.nav-cta {
+			font-size: 1rem !important;
+		}
+
+		.mobile-toggle {
+			display: flex;
+			z-index: 95;
+		}
 	}
 </style>

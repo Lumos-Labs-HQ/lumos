@@ -358,7 +358,7 @@
 {#if !mounted}
 	<div class="loading-screen">
 		<div class="loading-spinner">
-			<span class="logo-mark">◉</span>
+			<img src="/lumios-logo.png" alt="Lumos Labs" class="logo-mark" style="width: 48px; height: 48px; border-radius: 50%;" />
 		</div>
 	</div>
 {/if}
@@ -431,8 +431,8 @@
 					rel="noopener noreferrer"
 					class="project-card"
 					style="transition-delay: {i * 100}ms"
-					onmousemove={(e) => handleCardMouseMove(e, e.currentTarget)}
-					onmouseleave={(e) => handleCardMouseLeave(e.currentTarget)}
+					// onmousemove={(e) => handleCardMouseMove(e, e.currentTarget)}
+					// onmouseleave={(e) => handleCardMouseLeave(e.currentTarget)}
 				>
 					<div class="project-status">{project.status}</div>
 					<h3 class="project-title">{project.title}</h3>
@@ -676,7 +676,7 @@
 	<div class="container">
 		<div class="footer-inner">
 			<div class="footer-brand">
-				<span class="logo-mark">◉</span>
+				<img src="/lumios-logo.png" alt="Lumos Labs" class="logo-mark" style="width: 28px; height: 28px; border-radius: 50%; object-fit: contain;" />
 				<span class="logo-text">Lumos</span>
 			</div>
 			<p class="footer-copy">© 2026 Lumos. Engineering the future, one commit at a time.</p>

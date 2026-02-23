@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href="/lumios-logo.png" />
 	<title>Lumos — Innovation Studio | Open Source & Custom Software Development</title>
 	<meta name="description" content="Lumos builds cutting-edge projects, open-source libraries, and delivers world-class freelance engineering for global clients. Specializing in Go, TypeScript, and high-performance software solutions." />
 	<meta name="keywords" content="Lumos, Lumos Labs, software development, open source, Go development, TypeScript, ORM, Flash ORM, API documentation, system tools, freelance engineering, custom software, innovation studio, tech consulting" />
@@ -88,7 +88,7 @@
 <nav class="nav" class:nav-scrolled={scrollY > 50}>
 	<div class="nav-inner">
 		<a href="/" class="logo">
-			<span class="logo-mark">◉</span>
+			<img src="/lumios-logo.png" alt="Lumos Labs" class="logo-mark" />
 			<span class="logo-text">Lumos</span>
 		</a>
 
@@ -188,8 +188,10 @@
 	}
 
 	.logo-mark {
-		font-size: 1.4rem;
-		line-height: 1;
+		width: 32px;
+		height: 32px;
+		object-fit: contain;
+		border-radius: 50%;
 	}
 
 	.logo-text {

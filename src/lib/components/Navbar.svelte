@@ -8,7 +8,7 @@
 <nav class="nav" class:nav-scrolled={scrollY > 50}>
 	<div class="nav-inner">
 		<a href="/" class="logo">
-			<span class="logo-mark">◉</span>
+			<img src="/lumios-logo.png" alt="Lumos Labs" class="logo-mark" />
 			<span class="logo-text">Lumos</span>
 		</a>
 
@@ -74,8 +74,10 @@
 	}
 
 	.logo-mark {
-		font-size: 1.4rem;
-		line-height: 1;
+		width: 32px;
+		height: 32px;
+		object-fit: contain;
+		border-radius: 50%;
 	}
 
 	.logo-text {

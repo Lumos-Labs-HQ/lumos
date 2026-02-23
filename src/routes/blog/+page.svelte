@@ -83,7 +83,7 @@
 		<p class="hero-subtitle">
 			Insights, tutorials, and stories about building the future of developer tools.
 		</p>
-		<a href="/blog/new" class="btn btn-primary">Write New Post</a>
+		<!-- <a href="/blog/new" class="btn btn-primary">Write New Post</a> -->
 	</div>
 </section>
 

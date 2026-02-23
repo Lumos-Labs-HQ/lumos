@@ -424,12 +424,15 @@
 
 		<div class="projects-grid">
 			{#each projects as project, i}
-				<a 
-					href={project.link} 
-					target="_blank" 
-					rel="noopener noreferrer" 
-					class="project-card" 
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
+				<a
+					href={project.link}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="project-card"
 					style="transition-delay: {i * 100}ms"
+					onmousemove={(e) => handleCardMouseMove(e, e.currentTarget)}
+					onmouseleave={(e) => handleCardMouseLeave(e.currentTarget)}
 				>
 					<div class="project-status">{project.status}</div>
 					<h3 class="project-title">{project.title}</h3>
@@ -1706,6 +1709,16 @@
 	.section.section-visible .project-card {
 		opacity: 1;
 		transform: translateY(0);
+	}
+
+	.section.section-visible .project-card:hover {
+		border-color: var(--gray-900);
+		box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12);
+		transform: translateY(-8px);
+	}
+
+	.section.section-visible .project-card:hover::after {
+		width: 100%;
 	}
 
 	.project-card {

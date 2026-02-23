@@ -1,5 +1,9 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
+	import { inject } from '@vercel/analytics';
+	import Navbar from '$lib/components/Navbar.svelte';
+
+	inject();
 
 	let { children } = $props();
 	let scrollY = $state(0);

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import CanvasText from '$lib/components/CanvasText.svelte';
 
 	let mounted = $state(false);
 	let scrollY = $state(0);
@@ -429,8 +430,6 @@
 					rel="noopener noreferrer" 
 					class="project-card" 
 					style="transition-delay: {i * 100}ms"
-					onmousemove={(e) => handleCardMouseMove(e, e.currentTarget)}
-					onmouseleave={(e) => handleCardMouseLeave(e.currentTarget)}
 				>
 					<div class="project-status">{project.status}</div>
 					<h3 class="project-title">{project.title}</h3>
@@ -1027,7 +1026,7 @@
 		border: 1px solid var(--gray-200);
 		border-radius: var(--radius);
 		padding: 36px;
-		transition: all var(--transition);
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 		cursor: pointer;
 		position: relative;
 		overflow: hidden;
@@ -1036,35 +1035,25 @@
 		display: block;
 	}
 
-	.project-card::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(135deg, transparent 60%, var(--gray-50));
-		opacity: 0;
-		transition: opacity var(--transition);
-	}
-
 	.project-card::after {
 		content: '';
 		position: absolute;
-		top: 0;
+		bottom: 0;
 		left: 0;
-		right: 0;
-		height: 2px;
+		width: 0;
+		height: 3px;
 		background: linear-gradient(90deg, #667eea, #764ba2);
-		opacity: 0;
-		transition: opacity var(--transition);
+		transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.project-card:hover {
-		border-color: var(--gray-300);
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+		border-color: var(--gray-900);
+		box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12);
+		transform: translateY(-8px);
 	}
 
-	.project-card:hover::before,
 	.project-card:hover::after {
-		opacity: 1;
+		width: 100%;
 	}
 
 	.project-status {

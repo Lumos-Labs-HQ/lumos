@@ -76,14 +76,14 @@
 			name: 'Swarnendu Ghosh',
 			role: 'Founder & Engineer',
 			bio: 'Systems architect with a passion for building tools that developers love. Specializes in Go, Rust, and high-performance systems.',
-			github: 'https://github.com/swarnendug7',
-			twitter: 'https://x.com/swarnendug7'
+			github: 'https://github.com/swarnenduG07',
+			twitter: 'https://x.com/swarnenduG07'
 		},
 		{
 			name: 'Rana Dolui',
 			role: 'Co-Founder & Engineer',
 			bio: 'Full-stack engineer focused on creating seamless user experiences and scalable backend systems.',
-			github: 'https://github.com/ranadolui',
+			github: 'https://github.com/Rana718',
 			twitter: 'https://x.com/ranadolui'
 		}
 	];

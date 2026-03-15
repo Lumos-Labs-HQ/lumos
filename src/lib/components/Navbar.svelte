@@ -15,7 +15,7 @@
 		<div class="nav-links" class:nav-links-open={mobileMenuOpen}>
 			<a href="/#projects" onclick={() => (mobileMenuOpen = false)}>Projects</a>
 			<a href="/#services" onclick={() => (mobileMenuOpen = false)}>Services</a>
-			<a href="/blog" onclick={() => (mobileMenuOpen = false)}>Blog</a>
+			<!-- <a href="/blog" onclick={() => (mobileMenuOpen = false)}>Blog</a> -->
 			<a href="/about" onclick={() => (mobileMenuOpen = false)}>About</a>
 			<a href="/#contact" class="nav-cta" onclick={() => (mobileMenuOpen = false)}>Get in Touch</a>
 		</div>

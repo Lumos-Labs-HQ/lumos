@@ -613,18 +613,28 @@
 
 			<div class="contact-layout">
 				<div class="contact-form-wrapper">
-					<form class="contact-form" onsubmit={(e) => e.preventDefault()}>
+					<form
+						class="contact-form"
+						action="https://formsubmit.co/swarnendughosh05@gmail.com"
+						method="POST"
+					>
+						<input type="hidden" name="_subject" value="New message from Lumos website" />
+						<input type="hidden" name="_cc" value="ranadolui718@gmail.com" />
+						<input type="hidden" name="_captcha" value="false" />
+						<input type="hidden" name="_template" value="table" />
+						<input type="hidden" name="_next" value="https://lumoslab.tech/#contact" />
+						<input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
 						<div class="form-group">
 							<label for="name">Name</label>
-							<input type="text" id="name" placeholder="Your name" required />
+							<input type="text" id="name" name="name" placeholder="Your name" required />
 						</div>
 						<div class="form-group">
 							<label for="email">Email</label>
-							<input type="email" id="email" placeholder="your@email.com" required />
+							<input type="email" id="email" name="email" placeholder="your@email.com" required />
 						</div>
 						<div class="form-group">
 							<label for="message">Message</label>
-							<textarea id="message" rows="5" placeholder="Tell us about your project..." required></textarea>
+							<textarea id="message" name="message" rows="5" placeholder="Tell us about your project..." required></textarea>
 						</div>
 						<button type="submit" class="btn btn-primary">Send Message</button>
 					</form>
@@ -657,8 +667,8 @@
 
 					<div class="contact-links">
 						<a href="https://github.com/Lumos-Labs-HQ" class="contact-social" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-						<a href="https://x.com" class="contact-social" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
-						<a href="https://linkedin.com" class="contact-social" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+						<!-- <a href="https://x.com" class="contact-social" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
+						<a href="https://linkedin.com" class="contact-social" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a> -->
 						<a href="https://discord.gg/5ScEAsMT" class="contact-social" target="_blank" rel="noopener noreferrer">Discord ↗</a>
 					</div>
 

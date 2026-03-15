@@ -84,7 +84,7 @@
 			role: 'Co-Founder & Engineer',
 			bio: 'Full-stack engineer focused on creating seamless user experiences and scalable backend systems.',
 			github: 'https://github.com/Rana718',
-			twitter: 'https://x.com/ranadolui'
+			twitter: 'https://x.com/jack718r'
 		}
 	];
 </script>
@@ -144,7 +144,7 @@
 	</div>
 </section>
 
-<!-- Tech Stack Section -->
+<!-- Tech Stack Section
 <section id="tech" class="section section-alt" data-animate class:section-visible={isVisible('tech')}>
 	<div class="container">
 		<div class="section-header">
@@ -172,7 +172,7 @@
 			{/each}
 		</div>
 	</div>
-</section>
+</section> -->
 
 <style>
 	:root {

@@ -1,32 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { defaultPosts, toBlogPost, type BlogPost } from '$lib/blog/posts';
 
 	let mounted = $state(false);
 	let visibleSections = $state<Set<string>>(new Set());
 
-	// Blog posts data
-	let posts = $state([
-		{
-			id: 1,
-			title: 'Building Flash ORM: A Journey into Database Abstraction',
-			excerpt: 'How we built a Prisma-like ORM for Go with multi-database support and type-safe code generation.',
-			author: 'Swarnendu Ghosh',
-			date: '2026-02-20',
-			readTime: '8 min read',
-			image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
-			tags: ['Go', 'ORM', 'Database']
-		},
-		{
-			id: 2,
-			title: 'The Future of AI in Developer Tools',
-			excerpt: 'Exploring how AI and LLMs are transforming the way we build software and developer experiences.',
-			author: 'Rana Dolui',
-			date: '2026-02-18',
-			readTime: '6 min read',
-			image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
-			tags: ['AI', 'LLM', 'DevTools']
-		}
-	]);
+	let posts = $state<BlogPost[]>(defaultPosts);
 
 	onMount(() => {
 		mounted = true;
@@ -34,8 +13,17 @@
 		// Load posts from localStorage
 		const savedPosts = localStorage.getItem('blog_posts');
 		if (savedPosts) {
-			const parsedPosts = JSON.parse(savedPosts);
-			posts = [...parsedPosts, ...posts];
+			const parsedPosts = JSON.parse(savedPosts) as Record<string, unknown>[];
+			const normalizedSaved = parsedPosts.map((post) => toBlogPost(post));
+			const uniquePostsBySlug = new Map<string, BlogPost>();
+
+			for (const post of [...normalizedSaved, ...defaultPosts]) {
+				if (!uniquePostsBySlug.has(post.slug)) {
+					uniquePostsBySlug.set(post.slug, post);
+				}
+			}
+
+			posts = Array.from(uniquePostsBySlug.values());
 		}
 
 		const observer = new IntersectionObserver(
@@ -95,7 +83,7 @@
 	<div class="container">
 		<div class="posts-grid">
 			{#each posts as post, i}
-				<article class="post-card" style="transition-delay: {i * 100}ms">
+				<a class="post-card" style="transition-delay: {i * 100}ms" href="/blog/{post.slug}">
 					<div class="post-image" style="background-image: url({post.image})"></div>
 					<div class="post-content">
 						<div class="post-meta">
@@ -114,8 +102,9 @@
 							<div class="author-avatar">{post.author.charAt(0)}</div>
 							<span class="author-name">{post.author}</span>
 						</div>
+						<span class="read-link">Read article →</span>
 					</div>
-				</article>
+				</a>
 			{/each}
 		</div>
 	</div>
@@ -257,6 +246,8 @@
 		display: flex;
 		flex-direction: column;
 		cursor: pointer;
+		text-decoration: none;
+		color: inherit;
 	}
 
 	.post-card:hover {
@@ -357,6 +348,13 @@
 		font-size: 0.85rem;
 		color: var(--gray-600);
 		font-weight: 500;
+	}
+
+	.read-link {
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--gray-800);
+		padding-top: 6px;
 	}
 
 	/* Staggered card animation */

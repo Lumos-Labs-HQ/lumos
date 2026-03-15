@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { slugifyTitle } from '$lib/blog/posts';
+
 	let title = $state('');
 	let content = $state('');
 	let excerpt = $state('');
@@ -109,8 +111,25 @@
 			return;
 		}
 
+		const existingPosts = JSON.parse(localStorage.getItem('blog_posts') || '[]') as Array<Record<string, unknown>>;
+		const existingSlugs = new Set(
+			existingPosts
+				.map((post) => String(post.slug ?? '').trim())
+				.filter((slug) => slug.length > 0)
+		);
+
+		const baseSlug = slugifyTitle(title) || `post-${Date.now()}`;
+		let uniqueSlug = baseSlug;
+		let suffix = 2;
+
+		while (existingSlugs.has(uniqueSlug)) {
+			uniqueSlug = `${baseSlug}-${suffix}`;
+			suffix += 1;
+		}
+
 		const post = {
 			id: Date.now(),
+			slug: uniqueSlug,
 			title,
 			content,
 			excerpt: excerpt || content.substring(0, 150) + '...',
@@ -122,9 +141,8 @@
 		};
 
 		// Save to localStorage
-		const posts = JSON.parse(localStorage.getItem('blog_posts') || '[]');
-		posts.unshift(post);
-		localStorage.setItem('blog_posts', JSON.stringify(posts));
+		existingPosts.unshift(post);
+		localStorage.setItem('blog_posts', JSON.stringify(existingPosts));
 
 		alert('Post published successfully!');
 		window.location.href = '/blog';

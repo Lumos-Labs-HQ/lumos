@@ -21,6 +21,8 @@
 		"vite": "^7.3.1"
 	},
 	"dependencies": {
-		"@vercel/analytics": "^1.6.1"
+		"@types/three": "^0.183.1",
+		"@vercel/analytics": "^1.6.1",
+		"three": "^0.183.2"
 	}
 }

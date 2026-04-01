@@ -1,424 +1,700 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+  import { onMount } from "svelte";
+  import ThreeBackground from "$lib/components/ThreeBackground.svelte";
 
-	let mounted = $state(false);
-	let visibleSections = $state<Set<string>>(new Set());
+  let mounted = $state(false);
+  let mouseX = $state(0);
+  let mouseY = $state(0);
 
-	onMount(() => {
-		mounted = true;
+  let visibleSections = $state<Set<string>>(new Set());
 
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						visibleSections = new Set([...visibleSections, entry.target.id]);
-					}
-				});
-			},
-			{ threshold: 0.1 }
-		);
+  onMount(() => {
+    mounted = true;
 
-		document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            visibleSections = new Set([...visibleSections, entry.target.id]);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+    );
 
-		return () => observer.disconnect();
-	});
+    document
+      .querySelectorAll("[data-animate]")
+      .forEach((el) => observer.observe(el));
 
-	function isVisible(id: string): boolean {
-		return visibleSections.has(id);
-	}
+    // Normalized Cursor tracking for global 3D parallax (-1 to 1)
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
 
-	function handleCardMouseMove(e: MouseEvent, cardEl: HTMLElement) {
-		const rect = cardEl.getBoundingClientRect();
-		const x = e.clientX - rect.left;
-		const y = e.clientY - rect.top;
-		const centerX = rect.width / 2;
-		const centerY = rect.height / 2;
-		const rotateX = (y - centerY) / 20;
-		const rotateY = (centerX - x) / 20;
-		cardEl.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-	}
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  });
 
-	function handleCardMouseLeave(cardEl: HTMLElement) {
-		cardEl.style.transform = '';
-	}
+  function isVisible(id: string): boolean {
+    return visibleSections.has(id);
+  }
 
-	const techStack = [
-		{ name: 'Go', icon: '⚡', category: 'Backend' },
-		{ name: 'Rust', icon: '🦀', category: 'Systems' },
-		{ name: 'C', icon: '🔧', category: 'Systems' },
-		{ name: 'C++', icon: '⚙️', category: 'Systems' },
-		{ name: 'TypeScript', icon: '📘', category: 'Frontend' },
-		{ name: 'Python', icon: '🐍', category: 'AI/ML' },
-		{ name: 'JavaScript', icon: '💛', category: 'Frontend' },
-		{ name: 'Dart', icon: '🎯', category: 'Mobile' },
-		{ name: 'Svelte', icon: '🔥', category: 'Frontend' },
-		{ name: 'React', icon: '⚛️', category: 'Frontend' },
-		{ name: 'Next.js', icon: '▲', category: 'Frontend' },
-		{ name: 'Vue', icon: '💚', category: 'Frontend' },
-		{ name: 'TensorFlow', icon: '🧠', category: 'AI/ML' },
-		{ name: 'PyTorch', icon: '🔥', category: 'AI/ML' },
-		{ name: 'LangChain', icon: '🔗', category: 'AI/ML' },
-		{ name: 'OpenAI', icon: '🤖', category: 'AI/ML' },
-		{ name: 'Hugging Face', icon: '🤗', category: 'AI/ML' },
-		{ name: 'PostgreSQL', icon: '🐘', category: 'Database' },
-		{ name: 'MySQL', icon: '🐬', category: 'Database' },
-		{ name: 'MongoDB', icon: '🍃', category: 'Database' },
-		{ name: 'Redis', icon: '🔴', category: 'Database' },
-		{ name: 'Docker', icon: '🐳', category: 'DevOps' },
-		{ name: 'Kubernetes', icon: '☸️', category: 'DevOps' },
-		{ name: 'AWS', icon: '☁️', category: 'Cloud' },
-		{ name: 'GCP', icon: '☁️', category: 'Cloud' },
-		{ name: 'Azure', icon: '☁️', category: 'Cloud' }
-	];
+  function handleCardMouseMove(e: MouseEvent, cardEl: HTMLElement) {
+    const rect = cardEl.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
 
-	const team = [
-		{
-			name: 'Swarnendu Ghosh',
-			role: 'Founder & Engineer',
-			bio: 'Systems architect with a passion for building tools that developers love. Specializes in Go, Rust, and high-performance systems.',
-			github: 'https://github.com/swarnenduG07',
-			twitter: 'https://x.com/swarnenduG07'
-		},
-		{
-			name: 'Rana Dolui',
-			role: 'Co-Founder & Engineer',
-			bio: 'Full-stack engineer focused on creating seamless user experiences and scalable backend systems.',
-			github: 'https://github.com/Rana718',
-			twitter: 'https://x.com/jack718r'
-		}
-	];
+    const normalizedX = (x / rect.width) * 2 - 1;
+    const normalizedY = (y / rect.height) * 2 - 1;
+    const rotateX = normalizedY * 4.5;
+    const rotateY = -normalizedX * 4.5;
+
+    cardEl.style.setProperty("--mx", `${(x / rect.width) * 100}%`);
+    cardEl.style.setProperty("--my", `${(y / rect.height) * 100}%`);
+    cardEl.style.transition = "transform 0.14s cubic-bezier(0.25, 1, 0.5, 1)";
+    cardEl.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px) scale3d(1.01, 1.01, 1.01)`;
+  }
+
+  function handleCardMouseLeave(cardEl: HTMLElement) {
+    cardEl.style.transition = "transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)";
+    cardEl.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    cardEl.style.setProperty("--mx", "50%");
+    cardEl.style.setProperty("--my", "50%");
+  }
+
+  const team = [
+    {
+      name: "Swarnendu Ghosh",
+      role: "Founder & Lead Engineer",
+      pfp: "https://github.com/swarnenduG07.png?size=256",
+      bio: "Systems architect with a passion for building tools that developers love. Specializes in Go, Rust, and high-performance systems.",
+      github: "https://github.com/swarnenduG07",
+      twitter: "https://x.com/swarnenduG07",
+      gradient: "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
+    },
+    {
+      name: "Rana Dolui",
+      role: "Co-Founder & Engineer",
+      pfp: "https://github.com/Rana718.png?size=256",
+      bio: "Full-stack engineer focused on creating seamless user experiences and scalable backend systems.",
+      github: "https://github.com/Rana718",
+      twitter: "https://x.com/jack718r",
+      gradient: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
+    },
+  ];
 </script>
 
 <svelte:head>
-	<title>About Lumos Labs — Innovation Studio | Software Development Team</title>
-	<meta name="description" content="Meet the Lumos Labs team. We are software engineers passionate about building cutting-edge open-source tools and custom solutions. Specializing in Go, Rust, TypeScript, and AI/ML technologies." />
-	<meta name="keywords" content="Lumos Labs team, about Lumos, software development team, Go developers, Rust developers, TypeScript experts, open source contributors, tech innovation, engineering team" />
-	<link rel="canonical" href="https://lumoslab.tech/about" />
-	
-	<!-- Open Graph -->
-	<meta property="og:title" content="About Lumos Labs — Innovation Studio" />
-	<meta property="og:description" content="Meet the team behind Lumos. Building cutting-edge open-source tools and delivering world-class software engineering solutions." />
-	<meta property="og:url" content="https://lumoslab.tech/about" />
-	<meta property="og:type" content="website" />
-	
-	<!-- Twitter -->
-	<meta property="twitter:title" content="About Lumos Labs — Innovation Studio" />
-	<meta property="twitter:description" content="Meet the team behind Lumos. Building cutting-edge open-source tools and delivering world-class software engineering solutions." />
+  <title>About Lumos Labs — Innovation Studio | Software Development Team</title>
+  <meta
+    name="description"
+    content="Meet the Lumos Labs team. We are software engineers passionate about building cutting-edge open-source tools and custom solutions."
+  />
+  <link rel="canonical" href="https://lumoslab.tech/about" />
 </svelte:head>
 
-<!-- Hero -->
-<section class="hero" class:hero-visible={mounted}>
-	<div class="container">
-		<h1 class="hero-title">About Lumos</h1>
-		<p class="hero-subtitle">
-			We're a team of engineers who believe in building tools that make developers' lives easier.
-		</p>
-	</div>
-</section>
+<svelte:window />
+
+<!-- Hero Section -->
+<header class="about-hero" class:hero-visible={mounted}>
+  <ThreeBackground {mouseX} {mouseY} />
+  <div class="hero-bg">
+    <div class="grid-pattern"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow hero-glow-2"></div>
+  </div>
+
+  <div class="hero-content container">
+    <span class="hero-badge"><span class="badge-dot"></span> About Lumos Labs</span>
+    <h1 class="hero-title">
+      <span class="hero-line"><span class="hero-line-inner">Engineers Building</span></span>
+      <span class="hero-line"><span class="hero-line-inner hero-accent">Useful Software</span></span>
+    </h1>
+    <p class="hero-subtitle">
+      We are a small systems-focused studio creating open-source tools and production software with speed, clarity, and craftsmanship.
+    </p>
+  </div>
+</header>
 
 <!-- Team Section -->
-<section id="team" class="section" data-animate class:section-visible={isVisible('team')}>
-	<div class="container">
-		<div class="section-header">
-			<span class="section-tag">01</span>
-			<h2 class="section-title">The Team</h2>
-			<p class="section-subtitle">
-				Meet the people building the future of developer tools.
-			</p>
-		</div>
+<section
+  id="team"
+  class="section section-alt"
+  data-animate
+  class:section-visible={isVisible("team")}
+>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">01</span>
+      <h2 class="section-title">The Engineers</h2>
+      <p class="section-subtitle">
+        The minds behind Lumos Labs, building the next generation of developer
+        tooling.
+      </p>
+    </div>
 
-		<div class="team-grid">
-			{#each team as member, i}
-				<div class="team-card" style="transition-delay: {i * 100}ms">
-					<div class="team-avatar">{member.name.charAt(0)}</div>
-					<h3 class="team-name">{member.name}</h3>
-					<p class="team-role">{member.role}</p>
-					<p class="team-bio">{member.bio}</p>
-					<div class="team-links">
-						<a href={member.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-						<a href={member.twitter} target="_blank" rel="noopener noreferrer">Twitter ↗</a>
-					</div>
-				</div>
-			{/each}
-		</div>
-	</div>
+    <div class="team-grid">
+      {#each team as member, i}
+        <!-- svelte-ignore a11y_no_static_element_interactions -->
+        <div
+          class="team-card"
+        >
+          <div class="team-card-inner">
+            <div class="team-avatar-wrapper">
+              <div class="team-avatar">
+                {#if member.pfp}
+                  <img src={member.pfp} alt={member.name} loading="lazy" />
+                {:else}
+                  {member.name.charAt(0)}
+                {/if}
+              </div>
+            </div>
+            <h3 class="team-name">{member.name}</h3>
+            <p class="team-role">{member.role}</p>
+            <p class="team-bio">{member.bio}</p>
+            <div class="team-links">
+              <a href={member.github} target="_blank" rel="noopener noreferrer"
+                ><span class="social-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.58 2 12.24c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49 0-.24-.01-1.03-.01-1.86-2.78.61-3.37-1.2-3.37-1.2-.46-1.2-1.11-1.52-1.11-1.52-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.58 2.35 1.12 2.92.86.09-.67.35-1.12.64-1.38-2.22-.26-4.55-1.14-4.55-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.74 0 0 .84-.28 2.75 1.05A9.32 9.32 0 0 1 12 6.86c.85 0 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.43.2 2.48.1 2.74.64.72 1.03 1.64 1.03 2.76 0 3.95-2.33 4.82-4.56 5.07.36.32.69.94.69 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.59.69.49A10.28 10.28 0 0 0 22 12.24C22 6.58 17.52 2 12 2z" />
+                  </svg>
+                </span>
+                <span>GitHub</span></a
+              >
+              <a href={member.twitter} target="_blank" rel="noopener noreferrer"
+                ><span class="social-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.9 2H22l-6.78 7.75L23.2 22h-6.27l-4.9-6.37L6.45 22H3.34l7.25-8.3L1 2h6.42l4.42 5.84L18.9 2zm-1.1 18h1.73L6.48 3.9H4.62L17.8 20z" />
+                  </svg>
+                </span>
+                <span>Twitter</span></a
+              >
+            </div>
+          </div>
+        </div>
+      {/each}
+    </div>
+  </div>
 </section>
 
-<!-- Tech Stack Section
-<section id="tech" class="section section-alt" data-animate class:section-visible={isVisible('tech')}>
-	<div class="container">
-		<div class="section-header">
-			<span class="section-tag">02</span>
-			<h2 class="section-title">Tech Stack</h2>
-			<p class="section-subtitle">
-				The tools and technologies we use to build exceptional products.
-			</p>
-		</div>
-
-		<div class="tech-grid">
-			{#each techStack as tech, i}
-				<div 
-					class="tech-card" 
-					style="transition-delay: {i * 50}ms"
-					onmousemove={(e) => handleCardMouseMove(e, e.currentTarget)}
-					onmouseleave={(e) => handleCardMouseLeave(e.currentTarget)}
-				>
-					<span class="tech-icon">{tech.icon}</span>
-					<div class="tech-info">
-						<span class="tech-name">{tech.name}</span>
-						<span class="tech-category">{tech.category}</span>
-					</div>
-				</div>
-			{/each}
-		</div>
-	</div>
-</section> -->
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img
+          src="/lumios-logo.png"
+          alt="Lumos Labs"
+          class="logo-mark"
+          style="width: 24px; height: 24px; border-radius: 50%;"
+        />
+        <span class="logo-text">Lumos</span>
+      </div>
+      <p class="footer-copy">
+        © 2026 Lumos. Engineering the future, one commit at a time.
+      </p>
+    </div>
+  </div>
+</footer>
 
 <style>
-	:root {
-		--white: #ffffff;
-		--gray-50: #fafafa;
-		--gray-100: #f5f5f5;
-		--gray-200: #e5e5e5;
-		--gray-300: #d4d4d4;
-		--gray-400: #a3a3a3;
-		--gray-500: #737373;
-		--gray-600: #525252;
-		--gray-900: #171717;
-		--radius: 12px;
-		--transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-		--transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-	}
+  :root {
+    --white: #ffffff;
+    --gray-50: #fafafa;
+    --gray-100: #f4f4f5;
+    --gray-200: #e4e4e7;
+    --gray-300: #d4d4d8;
+    --gray-400: #a1a1aa;
+    --gray-500: #71717a;
+    --gray-600: #52525b;
+    --gray-700: #3f3f46;
+    --gray-800: #27272a;
+    --gray-900: #18181b;
+    --black: #09090b;
+    --radius-lg: 24px;
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 24px 48px rgba(0, 0, 0, 0.08);
+  }
 
-	.container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 0 32px;
-	}
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-	/* Hero */
-	.hero {
-		padding: 160px 32px 80px;
-		text-align: center;
-		opacity: 0;
-		transform: translateY(30px);
-		transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-	}
+  .about-hero {
+    min-height: 78vh;
+    padding: 160px 32px 100px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
 
-	.hero-visible {
-		opacity: 1;
-		transform: translateY(0);
-	}
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
 
-	.hero-title {
-		font-family: 'Space Grotesk', sans-serif;
-		font-size: clamp(2.5rem, 5vw, 4rem);
-		font-weight: 700;
-		letter-spacing: -0.03em;
-		color: var(--gray-900);
-		margin-bottom: 20px;
-	}
+  .grid-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.28;
+  }
 
-	.hero-subtitle {
-		font-size: 1.15rem;
-		line-height: 1.7;
-		color: var(--gray-500);
-		max-width: 600px;
-		margin: 0 auto;
-	}
+  .hero-glow {
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(760px, 70vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(20, 20, 20, 0.08) 0%, transparent 68%);
+    filter: blur(8px);
+    animation: glowPulse 7s ease-in-out infinite;
+  }
 
-	/* Sections */
-	.section {
-		padding: 100px 32px;
-	}
+  .hero-glow-2 {
+    top: auto;
+    bottom: -12%;
+    left: 18%;
+    width: min(500px, 50vw);
+    background: radial-gradient(circle, rgba(140, 140, 140, 0.12) 0%, transparent 70%);
+    animation-delay: 0.8s;
+  }
 
-	.section-alt {
-		background: var(--white);
-	}
+  @keyframes glowPulse {
+    0%, 100% {
+      opacity: 0.5;
+      transform: translateX(-50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translateX(-50%) scale(1.12);
+    }
+  }
 
-	.section-header {
-		margin-bottom: 64px;
-	}
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+  }
 
-	.section-tag {
-		display: inline-block;
-		font-family: 'Space Grotesk', monospace;
-		font-size: 0.8rem;
-		font-weight: 500;
-		color: var(--gray-400);
-		margin-bottom: 16px;
-		letter-spacing: 0.08em;
-	}
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid var(--gray-200);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s var(--ease-out-quart) 0.1s;
+  }
 
-	.section-title {
-		font-family: 'Space Grotesk', sans-serif;
-		font-size: clamp(2rem, 4vw, 3.2rem);
-		font-weight: 700;
-		letter-spacing: -0.03em;
-		color: var(--gray-900);
-		margin-bottom: 16px;
-	}
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    animation: pulseDot 2s infinite;
+  }
 
-	.section-subtitle {
-		font-size: 1.05rem;
-		line-height: 1.7;
-		color: var(--gray-500);
-		max-width: 560px;
-	}
+  @keyframes pulseDot {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
 
-	.section.section-visible .team-grid,
-	.section.section-visible .tech-grid {
-		opacity: 1;
-		transform: translateY(0);
-	}
+  .hero-title {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(3rem, 7.5vw, 6rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--black);
+    margin-bottom: 24px;
+  }
 
-	.team-grid,
-	.tech-grid {
-		opacity: 0;
-		transform: translateY(40px);
-		transition: all var(--transition-slow);
-	}
+  .hero-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 4px;
+  }
 
-	/* Team */
-	.team-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 32px;
-	}
+  .hero-line-inner {
+    display: inline-block;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 1s var(--ease-out-quart), opacity 0.8s var(--ease-out-quart);
+  }
 
-	.team-card {
-		background: var(--white);
-		border: 1px solid var(--gray-200);
-		border-radius: var(--radius);
-		padding: 40px;
-		text-align: center;
-		transition: all var(--transition);
-	}
+  .hero-accent {
+    background: linear-gradient(135deg, #111 0%, #555 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-	.team-card:hover {
-		border-color: var(--gray-300);
-		transform: translateY(-4px);
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
-	}
+  .hero-subtitle {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    line-height: 1.7;
+    color: var(--gray-500);
+    max-width: 760px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s var(--ease-out-quart) 0.5s;
+  }
 
-	.team-avatar {
-		width: 80px;
-		height: 80px;
-		border-radius: 50%;
-		background: var(--gray-900);
-		color: var(--white);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 2rem;
-		font-weight: 600;
-		margin: 0 auto 20px;
-	}
+  .hero-visible .hero-badge {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-	.team-name {
-		font-family: 'Space Grotesk', sans-serif;
-		font-size: 1.4rem;
-		font-weight: 600;
-		color: var(--gray-900);
-		margin-bottom: 8px;
-	}
+  .hero-visible .hero-line:nth-child(1) .hero-line-inner {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.18s;
+  }
 
-	.team-role {
-		font-size: 0.95rem;
-		color: var(--gray-500);
-		margin-bottom: 16px;
-	}
+  .hero-visible .hero-line:nth-child(2) .hero-line-inner {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.32s;
+  }
 
-	.team-bio {
-		font-size: 0.9rem;
-		line-height: 1.6;
-		color: var(--gray-600);
-		margin-bottom: 24px;
-	}
+  .hero-visible .hero-subtitle {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-	.team-links {
-		display: flex;
-		gap: 16px;
-		justify-content: center;
-	}
+  .section {
+    padding: 120px 32px;
+    position: relative;
+    z-index: 2;
+  }
 
-	.team-links a {
-		font-size: 0.85rem;
-		color: var(--gray-900);
-		text-decoration: none;
-		transition: color var(--transition);
-	}
+  .section-alt {
+    background: rgba(250, 250, 250, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  }
 
-	.team-links a:hover {
-		color: var(--gray-500);
-	}
+  .section-header {
+    margin-bottom: 72px;
+    max-width: 700px;
+  }
 
-	/* Tech Stack */
-	.tech-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-		gap: 16px;
-	}
+  .section-tag {
+    display: inline-block;
+    font-family: "Space Grotesk", monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-400);
+    margin-bottom: 20px;
+    letter-spacing: 0.1em;
+  }
 
-	.tech-card {
-		background: rgba(255, 255, 255, 0.7);
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px);
-		border: 1px solid rgba(255, 255, 255, 0.3);
-		border-radius: 12px;
-		padding: 24px 20px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 12px;
-		transition: all var(--transition);
-		cursor: pointer;
-		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-	}
+  .section-title {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--black);
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
 
-	.tech-card:hover {
-		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(255, 255, 255, 0.5);
-		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-	}
+  .section-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--gray-500);
+    max-width: 640px;
+  }
 
-	.tech-icon {
-		font-size: 2.5rem;
-		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-	}
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s var(--ease-out-quart), transform 0.8s var(--ease-out-quart);
+  }
 
-	.tech-info {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 4px;
-	}
+  .section-visible .team-grid {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-	.tech-name {
-		font-family: 'Space Grotesk', sans-serif;
-		font-size: 0.95rem;
-		font-weight: 600;
-		color: var(--gray-900);
-	}
+  .team-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.75s var(--ease-out-quart), transform 0.75s var(--ease-out-quart);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
 
-	.tech-category {
-		font-size: 0.75rem;
-		color: var(--gray-500);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
+  .section-visible .team-card {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-	@media (max-width: 768px) {
-		.hero {
-			padding: 120px 24px 60px;
-		}
+  .team-card-inner {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    transition: all 0.4s var(--ease-out-quart);
+    transform-style: preserve-3d;
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.02),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+  }
 
-		.section {
-			padding: 80px 24px;
-		}
+  .team-card-inner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        220px 220px at var(--mx, 50%) var(--my, 50%),
+        rgba(255, 255, 255, 0.45),
+        rgba(255, 255, 255, 0.08) 38%,
+        transparent 70%
+      );
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
 
-		.tech-grid {
-			grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-		}
-	}
+  .team-card-inner > * {
+    position: relative;
+    z-index: 3;
+  }
+
+  .team-card:hover .team-card-inner {
+    border-color: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow:
+      0 40px 80px -20px rgba(0, 0, 0, 0.08),
+      inset 0 0 0 1px rgba(255, 255, 255, 1);
+    transform: translateZ(6px);
+  }
+
+  .team-card:hover .team-card-inner::after {
+    opacity: 1;
+  }
+
+  .team-avatar-wrapper {
+    margin-bottom: 24px;
+    transform: translateZ(40px);
+  }
+
+  .team-avatar {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    background: var(--gray-900);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.35rem;
+    font-weight: 700;
+    font-family: "Space Grotesk", sans-serif;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+  }
+
+  .team-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .team-name {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+    transform: translateZ(50px);
+  }
+
+  .team-role {
+    font-family: "Space Grotesk", monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid var(--gray-200);
+    border-radius: 999px;
+    padding: 7px 12px;
+    display: inline-flex;
+    align-items: center;
+    transform: translateZ(30px);
+  }
+
+  .team-bio {
+    font-size: 0.98rem;
+    line-height: 1.72;
+    color: var(--gray-700);
+    margin-bottom: 30px;
+    max-width: 60ch;
+    transform: translateZ(20px);
+  }
+
+  .team-links {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    width: 100%;
+    transform: translateZ(40px);
+  }
+
+  .team-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+    padding: 11px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--gray-200);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: all 0.25s var(--ease-out-quart);
+  }
+
+  .team-links a:hover {
+    color: var(--black);
+    border-color: var(--gray-400);
+    background: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .social-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .social-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .footer {
+    padding: 48px 32px;
+    border-top: 1px solid var(--gray-200);
+    background: var(--white);
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-text {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--black);
+  }
+
+  .footer-copy {
+    font-size: 0.9rem;
+    color: var(--gray-500);
+  }
+
+  @media (max-width: 1024px) {
+    .team-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-hero {
+      min-height: auto;
+      padding: 120px 24px 64px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 10vw, 3.5rem);
+    }
+
+    .section {
+      padding: 80px 24px;
+    }
+
+    .team-card-inner {
+      padding: 38px 24px;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+    }
+  }
 </style>
